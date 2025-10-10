@@ -62,6 +62,12 @@ const HomeScreen = ({ navigation }) => {
                 image={{ uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=2048x2048&w=is&k=20&c=8QovDK9XochFpaIC-N3pn5EEaRSVuE1SKpQDVUxLSUk=' }}
             />
 
+
+
+
+
+
+
             {/* Search Bar */}
             <SearchBar
                 placeholder="Search"
