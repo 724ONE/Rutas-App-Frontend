@@ -9,6 +9,11 @@ import ForgotPasswordCode from '../screens/forgotPasswordCode/ForgotPasswordCode
 import Search from '../screens/search/Search'
 import CustomBottomNav from './bottomTabs/CustomBottomNav'
 import SavedLocation from '../screens/savedLocation/SavedLocation'
+import EditProfile from '../screens/editProfile/EditProfile'
+import MapViewScreen from '../screens/mapView/MapView'
+import AddLocation from '../screens/addLocation/AddLocation'
+
+
 
 
 
@@ -29,6 +34,9 @@ function AuthStack() {
     Search,
     Notifications,
     SavedLocation,
+    EditProfile,
+    MapViewScreen,
+    AddLocation
   }
 
   return (

@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import Colors from '../constants/colors';
-import { AppIcons } from '../constants/icons';
-import Fonts from '../constants/fonts';
-import IconButton from '../components/buttons/IconButton'
+import { View, Text, Image, StyleSheet, StatusBar } from 'react-native';
+import IconButton from '../components/buttons/IconButton';
 import Routes from '../navigation/routes';
 import { useNavigation } from '@react-navigation/native';
+import { Responsive, Theme } from '../libs';
+import { AppIcons } from '../constants/icons';
 
 const HeaderCard = ({ name, image }) => {
-  const navigation =useNavigation()
+  const navigation = useNavigation();
   return (
     <View style={styles.header}>
+      <StatusBar
+        translucent={false}
+        backgroundColor={Theme.colors.primary}
+      // barStyle="light-content"
+      />
       <View style={styles.left}>
         <Image source={image} style={styles.profileImg} />
         <View>
@@ -18,13 +22,14 @@ const HeaderCard = ({ name, image }) => {
           <Text style={styles.username}>Hello! {name}</Text>
         </View>
       </View>
+
       <IconButton
         icon={AppIcons.bell}
-        size={40}
-        iconSize={20}
-        borderRadius={8}
-        backgroundColor="#fff"
-        iconColor={Colors.primaryClr}
+        size={Responsive.getWidth('10%')}
+        iconSize={Responsive.getWidth('4.5%')}
+        borderRadius={Theme.borders.mediumRadius}
+        backgroundColor={Theme.colors.white}
+        iconColor={Theme.colors.primary}
         onPress={() => navigation.navigate(Routes.notifications)}
       />
     </View>
@@ -35,18 +40,34 @@ export default HeaderCard;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: Colors.primaryClr,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    backgroundColor: Theme.colors.primary,
+    borderBottomLeftRadius: Theme.borders.largeRadius,
+    borderBottomRightRadius: Theme.borders.largeRadius,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    paddingTop: 30,
-    marginHorizontal: -15,
+    paddingHorizontal: Responsive.getWidth('5%'),
+    paddingVertical: Responsive.getHeight('2.5%'),
+    paddingTop: Responsive.getHeight('5%'),
   },
-  left: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  profileImg: { height: 40, width: 40, borderRadius: 8, },
-  welcome: { color: Colors.whiteClr, fontSize: 14, fontFamily: Fonts.poppinsRegular },
-  username: { color: Colors.whiteClr, fontSize: 16, fontFamily: Fonts.poppinsSemiBold },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Responsive.getWidth('3%'),
+  },
+  profileImg: {
+    height: Responsive.getHeight('5%'),
+    width: Responsive.getHeight('5%'),
+    borderRadius: Theme.borders.fullRadius,
+  },
+  welcome: {
+    color: Theme.colors.white,
+    fontSize: Responsive.AppFonts.t2,
+    fontFamily: Theme.typography.body.fontFamily,
+  },
+  username: {
+    color: Theme.colors.white,
+    fontSize: Responsive.AppFonts.h6,
+    fontFamily: Theme.typography.subheading.fontFamily,
+  },
 });

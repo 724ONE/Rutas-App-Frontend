@@ -1,22 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import Colors from '../constants/colors';
 import { AppIcons } from '../constants/icons';
-import Fonts from '../constants/fonts';
+import { Responsive, Theme } from '../libs';
 
-const SavedLocationCard = ({ name, coordinates, contact, note, isLast }) => (
-  <View style={[styles.card, isLast && { marginBottom: 30 }]}>
+const SavedLocationCard = ({ name, coordinates, contact, note, isLast, onAdd }) => (
+  <View style={[styles.card, isLast && { marginBottom: Responsive.getHeight('4%') }]}>
     <View style={styles.row}>
       <Image source={AppIcons.locationPin} style={styles.icon} />
       <Text style={styles.name}>{name}</Text>
     </View>
 
-    <Text style={styles.sub}>Coordinates {coordinates}</Text>
+    <Text style={styles.sub}>Coordinates: {coordinates}</Text>
     <Text style={styles.sub}>Contact: {contact}</Text>
-    <Text style={styles.note}>Note: <Text style={{ color: Colors.primaryClr }}>{note}</Text></Text>
+    <Text style={styles.note}>
+      Note: <Text style={{ color: Theme.colors.primary }}>{note}</Text>
+    </Text>
 
     {isLast && (
-      <TouchableOpacity style={styles.addBtn}>
+      <TouchableOpacity style={styles.addBtn} onPress={onAdd}>
         <Image source={AppIcons.plus} style={styles.addIcon} />
       </TouchableOpacity>
     )}
@@ -27,29 +28,60 @@ export default SavedLocationCard;
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#E6E6E6',
-    borderRadius: 10,
-    padding: 15,
-    marginTop: 10,
-    backgroundColor: Colors.whiteClr,
+    borderWidth: Theme.borders.width,
+    borderColor: Theme.colors.borderClr,
+    borderRadius: Theme.borders.normalRadius,
+    backgroundColor: Theme.colors.white,
+    padding: Responsive.getWidth('4%'),
+    marginTop: Responsive.getHeight('1%'),
     position: 'relative',
+    ...Theme.shadows.small,
+    elevation: Theme.elevation.small,
   },
-  row: { flexDirection: 'row', alignItems: 'center', marginBottom: 5 },
-  icon: { height: 16, width: 16, tintColor: Colors.primaryClr, marginRight: 6 },
-  name: { fontFamily: Fonts.semiBold, fontSize: 14, color: Colors.blackClr },
-  sub: { fontFamily: Fonts.regular, fontSize: 13, color: '#555', marginTop: 2 },
-  note: { fontFamily: Fonts.regular, fontSize: 13, marginTop: 2, color: '#888' },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Responsive.getHeight('0.5%'),
+  },
+  icon: {
+    height: Responsive.getHeight('2%'),
+    width: Responsive.getHeight('2%'),
+    tintColor: Theme.colors.primary,
+    marginRight: Responsive.getWidth('2%'),
+  },
+  name: {
+    fontFamily: Theme.typography.subheading.fontFamily,
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.text,
+  },
+  sub: {
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t3,
+    color: Theme.colors.secondryText,
+    marginTop: Responsive.getHeight('0.5%'),
+  },
+  note: {
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t3,
+    color: Theme.colors.dark,
+    marginTop: Responsive.getHeight('0.5%'),
+  },
   addBtn: {
-    backgroundColor: Colors.primaryClr,
-    height: 40,
-    width: 40,
-    borderRadius: 999,
+    backgroundColor: Theme.colors.primary,
+    height: Responsive.getHeight('5%'),
+    width: Responsive.getHeight('5%'),
+    borderRadius: Theme.borders.fullRadius * 2,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 15,
-    right: 15,
+    bottom: Responsive.getHeight('2%'),
+    right: Responsive.getWidth('3%'),
+    ...Theme.shadows.medium,
+    elevation: Theme.elevation.medium,
   },
-  addIcon: { height: 18, width: 18, tintColor: Colors.whiteClr },
+  addIcon: {
+    height: Responsive.getHeight('2.2%'),
+    width: Responsive.getHeight('2.2%'),
+    tintColor: Theme.colors.white,
+  },
 });

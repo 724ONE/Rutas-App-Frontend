@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Fonts from '../constants/fonts';
-import AppColors from '../constants/colors';
+import { Theme, Responsive } from '../libs';
 import FloatingIconButton from './buttons/FloatingIconButton';
 
 const LocationCard = ({ item, onPressIcon }) => {
@@ -10,14 +9,14 @@ const LocationCard = ({ item, onPressIcon }) => {
             <View style={styles.row}>
                 <FloatingIconButton
                     onPress={onPressIcon}
-                    size={30}
+                    size={Responsive.getHeight('4%')}
                     style={styles.iconButton}
                 />
                 <View style={{ flex: 1 }}>
                     <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.detail}>Coordinates {item.coords}</Text>
+                    <Text style={styles.detail}>Coordinates: {item.coords}</Text>
                     <Text style={styles.detail}>Contact: {item.contact}</Text>
-                    <Text style={[styles.note, { color: item.noteColor }]}>
+                    <Text style={[styles.note, { color: item.noteColor || Theme.colors.primary }]}>
                         Note: {item.note}
                     </Text>
                 </View>
@@ -30,34 +29,36 @@ export default LocationCard;
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: AppColors.whiteClr,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: AppColors.borderClr,
-        padding: 12,
-        marginBottom: 12,
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.borders.normalRadius,
+        borderWidth: Theme.borders.width,
+        borderColor: Theme.colors.borderClr,
+        padding: Responsive.getWidth('4%'),
+        marginBottom: Responsive.getHeight('1.5%'),
+        ...Theme.shadows.small,
+        elevation: Theme.elevation.small,
     },
     row: {
         flexDirection: 'row',
         alignItems: 'flex-start',
     },
     iconButton: {
-        marginRight: 10,
+        marginRight: Responsive.getWidth('3%'),
     },
     title: {
-        fontFamily: Fonts.poppinsSemiBold,
-        fontSize: 14,
-        color: AppColors.blackClr,
+        fontFamily: Theme.typography.subheading.fontFamily,
+        fontSize: Responsive.AppFonts.t2,
+        color: Theme.colors.text,
     },
     detail: {
-        fontFamily: Fonts.poppinsRegular,
-        fontSize: 12,
-        color: AppColors.grayText,
-        marginTop: 2,
+        fontFamily: Theme.typography.body.fontFamily,
+        fontSize: Responsive.AppFonts.t3,
+        color: Theme.colors.secondryText,
+        marginTop: Responsive.getHeight('0.5%'),
     },
     note: {
-        fontFamily: Fonts.poppinsMedium,
-        fontSize: 12,
-        marginTop: 3,
+        fontFamily: Theme.typography.medium.fontFamily,
+        fontSize: Responsive.AppFonts.t3,
+        marginTop: Responsive.getHeight('0.5%'),
     },
 });

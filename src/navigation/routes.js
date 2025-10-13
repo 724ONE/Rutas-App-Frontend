@@ -1,3 +1,4 @@
+
 const Routes = {
     splash: 'SplashSreen',
     onboarding: 'OnBordingScreen',
@@ -11,10 +12,11 @@ const Routes = {
     location: 'Location',
     notifications: 'Notifications',
     profile: 'Profile',
-    search:'Search',
-        savedLocation:'SavedLocation'
-
-
+    editProfile: 'EditProfile',
+    search: 'Search',
+    savedLocation: 'SavedLocation',
+    mapViewScreen: 'AddLocation',
+    addLocation: 'MapViewScreen',
 
 }
 export default Routes;

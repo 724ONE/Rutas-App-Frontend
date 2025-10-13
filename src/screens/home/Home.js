@@ -1,23 +1,43 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import Colors from '../../constants/colors';
+import { View, ScrollView, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { Responsive, Theme } from '../../libs';
+import RootView from '../../components/RootView';
 import HeaderCard from '../../components/HeaderCard';
 import SearchBar from '../../components/SearchBar';
 import DashboardCard from '../../components/DashboardCard';
-import Fonts from '../../constants/fonts';
-import { AppIcons } from '../../constants/icons';
-import Heading from '../../components/text/Heading';
-import Routes from '../../navigation/routes';
 import LocationCard from '../../components/LocationCard';
+import Heading from '../../components/text/Heading';
 import TextButton from '../../components/buttons/TextButton';
-import AppColors from '../../constants/colors';
+import FloatingActionButton from '../../components/buttons/FloatingActionButton';
+import { AppIcons } from '../../constants/icons';
+import Routes from '../../navigation/routes';
 
 const HomeScreen = ({ navigation }) => {
     const dashboardData = [
-        { title: 'Saved', value: '3', bg: '#FFF4D4', iconColor: Colors.primaryClr, icon: AppIcons.mapLocation, onPress: () => navigation.navigate(Routes.savedLocation) },
-        { title: 'Routes', value: '5', bg: '#E6EEFF', iconColor: '#3B82F6' },
-        { title: 'Completed Routes', value: '12', bg: '#E9F8ED', iconColor: '#22C55E' },
-        // { title: 'Pending Tasks', value: '4', bg: '#FFE4E6', iconColor: '#EF4444' },
+        {
+            title: 'Saved',
+            value: '3',
+            bg: '#FFF4D4',
+            iconColor: Theme.colors.primary,
+            icon: AppIcons.mapLocation,
+            onPress: () => navigation.navigate(Routes.savedLocation),
+        },
+        {
+            title: 'Routes',
+            value: '5',
+            bg: '#E6EEFF',
+            iconColor: Theme.colors.lightSky,
+            icon: AppIcons.list,
+            onPress: () => navigation.navigate(Routes.savedLocation),
+        },
+        {
+            title: 'Completed Routes',
+            value: '12',
+            bg: '#E9F8ED',
+            iconColor: Theme.colors.success,
+            icon: AppIcons.greenTick,
+            onPress: () => navigation.navigate(Routes.savedLocation),
+        },
     ];
 
     const savedLocations = [
@@ -50,100 +70,96 @@ const HomeScreen = ({ navigation }) => {
             coordinates: '40.7128, -74.0060',
             contact: 'Security Gate',
             note: 'Requires ID verification',
-            isLast: true,
         },
     ];
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            {/* Header */}
+        <RootView
+            statusColor={Theme.colors.primary}
+            backgroundColor={Theme.colors.screenBg}
+            isInBottomTab={true}>
+                 {/* ✅ Manually control status bar */}
+    
+            {/* Fixed Header (outside ScrollView) */}
             <HeaderCard
                 name="Lorem"
-                image={{ uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=2048x2048&w=is&k=20&c=8QovDK9XochFpaIC-N3pn5EEaRSVuE1SKpQDVUxLSUk=' }}
-            />
-
-
-
-
-
-
-
-            {/* Search Bar */}
-            <SearchBar
-                placeholder="Search"
-                onPress={() => navigation.navigate(Routes.search)}
-            />
-
-            {/* Map View Placeholder */}
-            <View style={styles.mapBox}>
-                <Heading title={'Map View'} customStyles={styles.headingText} />
-                <View style={styles.mapPlaceholder} />
-            </View>
-
-            {/* Dashboard */}x
-            <Heading title={'Dashboard'} customStyles={[styles.headingText, { marginTop: 10 }]} />
-
-
-
-            <View style={styles.dashboardGrid}>
-                {dashboardData.map((item, index) => (
-                    <View key={index} style={styles.dashboardItem}>
-                        <DashboardCard
-                            title={item.title}
-                            value={item.value}
-                            bg={item.bg}
-                            iconColor={item.iconColor}
-                            icon={item.icon}
-                            onPress={item.onPress}
-                        />
-                    </View>
-                ))}
-            </View>
-
-            {/* <View style={styles.dashboardRow}>
-                <DashboardCard title="Saved" value="3" bg="#FFF4D4" iconColor={Colors.primaryClr} icon={AppIcons.mapLocation} onPress={() => {
-                    navigation.navigate(Routes.savedLocation)
-                }} />
-                <DashboardCard title="Routes" value="5" bg="#E6EEFF" iconColor="#3B82F6" />
-            </View>
-            <View style={styles.dashboardRow}>
-                <DashboardCard title="Completed Routes" value="12" bg="#E9F8ED" iconColor="#22C55E" />
-            </View> */}
-
-            {/* Saved Locations */}
-            <View style={styles.savedHeader}>
-
-                <Heading title={'Saved Locations'} customStyles={[styles.headingText, {}]} />
-
-                <TextButton onPress={() => {
-                    navigation.navigate(Routes.savedLocation)
+                image={{
+                    uri: 'https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.jpg?s=2048x2048&w=is&k=20&c=8QovDK9XochFpaIC-N3pn5EEaRSVuE1SKpQDVUxLSUk=',
                 }}
-                    text={'View All'}
-                    customStyles={{
-                        marginBottom: 0,
-                    }}
-                    textStyles={{
-                        fontSize: 12,
-                        color: AppColors.primaryClr,
-                        fontFamily: Fonts.poppinsRegular,
-                    }}
-                />
-            </View>
+            />
 
-            {savedLocations.map((item, index) => (
-                <LocationCard
-                    key={index}
-                    item={{
-                        title: item.name,
-                        coords: item.coordinates,
-                        contact: item.contact,
-                        note: item.note,
-                        noteColor: Colors.primaryClr,
-                    }}
-                    onPressIcon={() => console.log(`Center map on: ${item.name}`)}
+            {/* Scrollable content */}
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Responsive.getHeight('3%'),
+                }}
+            >
+                {/* Search Bar */}
+                <SearchBar
+                    placeholder="Search"
+                    onPress={() => navigation.navigate(Routes.search)}
                 />
-            ))}
-        </ScrollView>
+
+                {/* Map View */}
+                <View style={styles.mapBox}>
+                    <Heading title="Map View" customStyles={styles.headingText} />
+                    <TouchableOpacity
+                        style={styles.mapPlaceholder}
+                        onPress={() => navigation.navigate(Routes.mapViewScreen)}
+                    />
+                </View>
+
+                {/* Dashboard */}
+                <Heading
+                    title="Dashboard"
+                    customStyles={[styles.headingText, { marginTop: Responsive.getHeight('1.5%') }]}
+                />
+
+                <View style={styles.dashboardGrid}>
+                    {dashboardData.map((item, index) => (
+                        <View key={index} style={styles.dashboardItem}>
+                            <DashboardCard {...item} />
+                        </View>
+                    ))}
+                </View>
+
+                {/* Saved Locations */}
+                <View style={styles.savedHeader}>
+                    <Heading title="Saved Locations" customStyles={styles.headingText} />
+                    <TextButton
+                        text="View All"
+                        onPress={() => navigation.navigate(Routes.savedLocation)}
+                        customStyles={{ marginBottom: 0 }}
+                        textStyles={styles.viewAllText}
+                    />
+                </View>
+
+                <View style={{ marginBottom: Responsive.getHeight('2%') }}>
+                    {savedLocations.map((item, index) => (
+                        <LocationCard
+                            key={index}
+                            item={{
+                                title: item.name,
+                                coords: item.coordinates,
+                                contact: item.contact,
+                                note: item.note,
+                                noteColor: Theme.colors.primary,
+                            }}
+                            onPressIcon={() => console.log(`Center map on: ${item.name}`)}
+                        />
+                    ))}
+                </View>
+
+            </ScrollView>
+
+            {/* Floating Action Button */}
+            <FloatingActionButton
+                icon={AppIcons.circleAdd}
+                onPress={() => navigation.navigate(Routes.addLocation)}
+            />
+        </RootView>
     );
 };
 
@@ -152,42 +168,43 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.whiteClr,
-        paddingHorizontal: 15,
+        backgroundColor: Theme.colors.screenBg,
+        paddingHorizontal: Responsive.getWidth('5%'),
     },
-    mapBox: { marginTop: 10 },
+    mapBox: {
+        marginTop: Responsive.getHeight('2%'),
+    },
     headingText: {
-        fontFamily: Fonts.poppinsSemiBold,
-        color: Colors.blackClr,
-        fontSize: 14,
-        marginBottom: 6,
+        fontFamily: Theme.typography.subheading.fontFamily,
+        fontSize: Responsive.AppFonts.h5,
+        color: Theme.colors.text,
+        marginBottom: Responsive.getHeight('0.8%'),
     },
     mapPlaceholder: {
-        height: 140,
-        borderRadius: 12,
-        backgroundColor: '#F5F5F5',
+        height: Responsive.getHeight('18%'),
+        borderRadius: Theme.borders.largeRadius,
+        backgroundColor: Theme.colors.grey,
     },
-    dashboardRow: {
+    dashboardGrid: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginTop: 10,
+        marginTop: Responsive.getHeight('1.5%'),
+    },
+    dashboardItem: {
+        width: '48%',
+        marginBottom: Responsive.getHeight('1.5%'),
     },
     savedHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginVertical: 10,
-        marginTop: 15
+        marginTop: Responsive.getHeight('2%'),
+        marginBottom: Responsive.getHeight('1%'),
     },
-    /** Dashboard grid layout */
-    dashboardGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        marginTop: 10,
-    },
-    dashboardItem: {
-        width: '48%', // ensures 2 cards per row with spacing
-        marginBottom: 12,
+    viewAllText: {
+        fontFamily: Theme.typography.body.fontFamily,
+        fontSize: Responsive.AppFonts.t1,
+        color: Theme.colors.primary,
     },
 });

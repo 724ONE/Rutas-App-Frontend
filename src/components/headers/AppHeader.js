@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
+import { Theme, Responsive } from '../../libs';
 import { AppIcons } from '../../constants/icons';
 import IconButton from '../buttons/IconButton';
 
@@ -10,39 +9,72 @@ const AppHeader = ({
   onBackPress,
   rightIcon,
   onRightPress,
-  backgroundColor = AppColors.primaryClr,
-  textColor = AppColors.whiteClr,
+  backgroundColor = Theme.colors.primary,
   showBack = true,
   containerStyle,
 }) => {
+  // Determine if background is white
+  const isWhiteBg = backgroundColor === Theme.colors.white;
+
+  const iconBgColor = isWhiteBg ? Theme.colors.primary : Theme.colors.white;
+  const iconTintColor = isWhiteBg ? Theme.colors.white : Theme.colors.primary;
+  const titleColor = isWhiteBg ? Theme.colors.text : Theme.colors.white;
+
   return (
-    <View style={[styles.header, { backgroundColor }, containerStyle]}>
+    <View
+      style={[
+        styles.header,
+        {
+          backgroundColor,
+          borderBottomLeftRadius: Theme.borders.fullRadius,
+          borderBottomRightRadius: Theme.borders.fullRadius,
+        },
+        containerStyle,
+      ]}
+    >
       {/* Back Button */}
       {showBack ? (
         <IconButton
           icon={AppIcons.backArrow}
+          size={Responsive.getWidth('10%')}
+          iconSize={Responsive.getWidth('4%')}
+          backgroundColor={iconBgColor}
+          iconColor={iconTintColor}
+          borderRadius={Responsive.getWidth('5%')}
           onPress={onBackPress}
-          style={styles.backButton}
-          size={36}
-          iconSize={16}
         />
       ) : (
-        <View style={{ width: 40 }} /> // placeholder for alignment
+        <View style={{ width: Responsive.getWidth('10%') }} />
       )}
 
       {/* Title */}
-      <Text style={[styles.title, { color: textColor }]}>{title}</Text>
+      <Text
+        style={[
+          styles.title,
+          {
+            color: titleColor,
+            fontFamily: Theme.typography.subheading.fontFamily,
+            fontWeight: Theme.typography.subheading.fontWeight,
+          },
+        ]}
+        numberOfLines={1}
+      >
+        {title}
+      </Text>
 
-      {/* Optional Right Icon */}
+      {/* Right Icon (optional) */}
       {rightIcon ? (
         <IconButton
           icon={rightIcon}
+          size={Responsive.getWidth('10%')}
+          iconSize={Responsive.getWidth('4%')}
+          backgroundColor={iconBgColor}
+          iconColor={iconTintColor}
+          borderRadius={Responsive.getWidth('5%')}
           onPress={onRightPress}
-          style={styles.rightButton}
-          size={22}
         />
       ) : (
-        <View style={{ width: 40 }} /> // maintain layout
+        <View style={{ width: Responsive.getWidth('10%') }} />
       )}
     </View>
   );
@@ -52,30 +84,16 @@ export default AppHeader;
 
 const styles = StyleSheet.create({
   header: {
-    height: 110,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    paddingTop: 50,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-  },
-  backButton: {
-    backgroundColor: AppColors.whiteClr,
-    borderRadius: 100,
-    padding: 8,
+    paddingHorizontal: Responsive.getWidth('6%'),
+    paddingTop: Responsive.getHeight('6%'),
+    paddingBottom: Responsive.getHeight('2%'),
   },
   title: {
-    fontFamily: Fonts.poppinsSemiBold,
-    fontSize: 17,
-    textAlign: 'center',
     flex: 1,
-  },
-  rightButton: {
-    backgroundColor: AppColors.whiteClr,
-    borderRadius: 100,
-    padding: 8,
+    textAlign: 'center',
+    fontSize: Responsive.sizeMatter.moderateScale(17),
   },
 });

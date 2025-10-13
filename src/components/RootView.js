@@ -1,15 +1,15 @@
-import { View, StatusBar } from 'react-native';
 import React from 'react';
+import { View, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Colors from '../constants/colors';
+import { Responsive, Theme } from '../libs'
 
 const RootView = ({
   children,
   noSafeArea = false,
   noStatusBarHeight = false,
-  statusColor = Colors.whiteClr,
-  backgroundColor = Colors.whiteClr,
-  innerViewColor = Colors.screenBg,
+  statusColor = Theme.colors.white,
+  backgroundColor = Theme.colors.white,
+  innerViewColor = Theme.colors.screenBg,
   barStyle = 'dark-content',
   isInBottomTab = false,
   style,
@@ -17,22 +17,23 @@ const RootView = ({
 }) => {
   const { top, left, right, bottom } = useSafeAreaInsets();
 
+  const bottomPadding = isInBottomTab
+    ? bottom + Responsive.getHeight('5%')
+    : bottom;
+
   return (
     <View
       style={{
-        backgroundColor: backgroundColor,
         flex: 1,
+        backgroundColor,
         paddingTop:
           !noStatusBarHeight && noSafeArea
             ? StatusBar.currentHeight
             : undefined,
         ...style,
       }}>
-      <StatusBar
-        translucent
-        backgroundColor={statusColor}
-        barStyle={barStyle}
-      />
+      <StatusBar translucent backgroundColor={statusColor} barStyle={barStyle} />
+
       {noSafeArea ? (
         children
       ) : (
@@ -42,14 +43,14 @@ const RootView = ({
             paddingTop: top,
             paddingLeft: left,
             paddingRight: right,
-            marginBottom: bottom,
-            backgroundColor: backgroundColor,
+            paddingBottom: bottomPadding, // ✅ updated
+            backgroundColor,
           }}>
           <View
             style={{
               flex: 1,
               backgroundColor: innerViewColor,
-              paddingHorizontal: paddingHorizontal,
+              paddingHorizontal,
             }}>
             {children}
           </View>

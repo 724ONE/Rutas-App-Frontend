@@ -1,43 +1,59 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { AppIcons } from '../../constants/icons';
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
+import { Responsive, Theme } from '../../libs';
 
 const InputText = ({
   placeholder,
   value,
   onChangeText,
-  secureTextEntry,
-  keyboardType,
-  isInvalid,
-  icon,
-  showToggle = false,
-  heading
+  secureTextEntry = false,
+  keyboardType = 'default',
+  isInvalid = false,
+  leftIcon,          // optional left icon
+  rightIcon,         // optional right icon (edit, custom, etc.)
+  showToggle = false, // if true -> show password toggle icon
+  heading,
+  onRightPress,      // optional right icon press handler
 }) => {
   const [hide, setHide] = useState(secureTextEntry);
 
   return (
     <View>
-      <Text style={styles.heading}>{heading}</Text>
+      {heading && <Text style={styles.heading}>{heading}</Text>}
+
       <View style={[styles.container, isInvalid && styles.errorBorder]}>
-        {icon && <Image source={icon} style={styles.icon} />}
+        {/* 👈 Left Icon */}
+        {leftIcon && <Image source={leftIcon} style={styles.leftIcon} />}
+
+        {/* 📝 Text Input */}
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            { paddingLeft: leftIcon ? Responsive.getWidth('2%') : 0 },
+          ]}
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
           secureTextEntry={hide}
           keyboardType={keyboardType}
-          placeholderTextColor="#9a9a9a"
+          placeholderTextColor={Theme.colors.hintText}
         />
-        {showToggle && (
+
+        {/* 👉 Right Icon (Custom or Password Toggle) */}
+        {showToggle ? (
           <TouchableOpacity onPress={() => setHide(!hide)}>
             <Image
               source={hide ? AppIcons.showPass : AppIcons.hidePass}
-              style={styles.eyeIcon}
+              style={styles.rightIcon}
             />
           </TouchableOpacity>
+        ) : (
+          rightIcon && (
+            <TouchableOpacity onPress={onRightPress}>
+              <Image source={rightIcon} style={styles.rightIcon} />
+            </TouchableOpacity>
+          )
         )}
       </View>
     </View>
@@ -48,41 +64,44 @@ export default InputText;
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: 14,
-    fontFamily: Fonts.poppinsMedium,
-    color: AppColors.blackClr,
-    marginBottom: 8,
+    fontSize: Responsive.sizeMatter.moderateScale(14),
+    fontFamily: Theme.typography.medium.fontFamily,
+    color: Theme.colors.text,
+    marginBottom: Responsive.getHeight('1%'),
   },
   container: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: AppColors.borderClr,
-    borderRadius: 10,
     alignItems: 'center',
-    paddingHorizontal: 12,
-    height:50,
-    marginBottom: 15,
+    borderWidth: Theme.borders.width,
+    borderColor: Theme.colors.borderClr,
+    borderRadius: Theme.borders.regularRadius,
+    paddingHorizontal: Responsive.getWidth('3.5%'),
+    height: Responsive.getHeight('6%'),
+    marginBottom: Responsive.getHeight('2%'),
+    backgroundColor: Theme.colors.white,
   },
   input: {
     flex: 1,
-    height: 50,
-    fontSize: 16,
-    color: '#000',
+    height: '100%',
+    fontSize: Responsive.sizeMatter.moderateScale(15),
+    color: Theme.colors.text,
+    fontFamily: Theme.typography.body.fontFamily,
   },
-  icon: {
-    resizeMode: 'center',
-    width: 20,
-    height: 20,
-    tintColor: AppColors.primaryClr,
-    marginRight: 8,
+  leftIcon: {
+    resizeMode: 'contain',
+    width: Responsive.getWidth('4.5%'),
+    height: Responsive.getWidth('4.5%'),
+    tintColor: Theme.colors.primary,
+    marginRight: Responsive.getWidth('2%'),
   },
-  eyeIcon: {
-    width: 22,
-    height: 22,
-    tintColor: AppColors.primaryClr,
-    resizeMode: 'contain'
+  rightIcon: {
+    width: Responsive.getWidth('4.5%'),
+    height: Responsive.getWidth('4.5%'),
+    tintColor: Theme.colors.primary,
+    resizeMode: 'contain',
+    marginLeft: Responsive.getWidth('2%'),
   },
   errorBorder: {
-    borderColor: '#e53935',
+    borderColor: Theme.colors.error,
   },
 });
