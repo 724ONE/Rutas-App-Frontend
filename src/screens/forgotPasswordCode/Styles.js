@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
+import { Theme, Responsive } from '../../libs';
 
 export const forgotPasswordCodeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.whiteClr,
-    paddingHorizontal: 20,
-    paddingTop: 40,
+    backgroundColor: Theme.colors.white,
+    paddingHorizontal: Responsive.getWidth('5%'),
+    paddingTop: Responsive.getHeight('4%'),
   },
 
   // Header section (matches Login/ForgotPassword)
@@ -16,17 +15,17 @@ export const forgotPasswordCodeStyles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 28,
-    fontFamily: Fonts.poppinsBemiBold,
-    color: AppColors.blackClr,
-    marginBottom: 10,
+    fontSize: Responsive.AppFonts.h2,
+    fontFamily: Theme.typography.subheading.fontFamily,
+    color: Theme.colors.text,
+    marginBottom: Responsive.getHeight('1%'),
   },
 
   subtitle: {
-    fontSize: 14,
-    fontFamily: Fonts.poppinsRegular,
-    color: AppColors.textLightGrey || '#7a7a7a',
-    lineHeight: 20,
+    fontSize: Responsive.AppFonts.t1,
+    fontFamily: Theme.typography.body.fontFamily,
+    color: Theme.colors.textLight || '#7a7a7a',
+    lineHeight: Responsive.getHeight('2.2%'),
   },
 
   // OTP label + code input area
@@ -36,10 +35,10 @@ export const forgotPasswordCodeStyles = StyleSheet.create({
   },
 
   otpLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.poppinsMedium,
-    color: AppColors.blackClr,
-    marginBottom: 12,
+    fontSize: Responsive.AppFonts.t1,
+    fontFamily: Theme.typography.medium.fontFamily,
+    color: Theme.colors.text,
+    marginBottom: Responsive.getHeight('1%'),
   },
 
   codeFieldRoot: {
@@ -49,38 +48,38 @@ export const forgotPasswordCodeStyles = StyleSheet.create({
   },
 
   cell: {
-    width: 45,
-    height: 55,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: AppColors.borderClr || '#bfbfbf',
+    width: Responsive.getWidth('12%'),
+    height: Responsive.getHeight('7%'),
+    borderRadius: Theme.borders.regularRadius,
+    borderWidth: Theme.borders.width,
+    borderColor: Theme.colors.borderClr || '#bfbfbf',
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontSize: 20,
-    fontFamily: Fonts.poppinsMedium,
-    color: AppColors.blackClr,
-    backgroundColor: AppColors.whiteClr,
+    fontSize: Responsive.AppFonts.h5,
+    fontFamily: Theme.typography.medium.fontFamily,
+    color: Theme.colors.text,
+    backgroundColor: Theme.colors.white,
   },
 
   focusCell: {
-    borderColor: AppColors.primaryClr,
+    borderColor: Theme.colors.primary,
     borderWidth: 2,
   },
 
   // Continue button (reuses login button theme)
   continueButton: {
-    backgroundColor: AppColors.primaryClr,
-    borderRadius: 12,
-    height: 50,
+    backgroundColor: Theme.colors.primary,
+    borderRadius: Theme.borders.regularRadius,
+    height: Responsive.getHeight('6%'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: Responsive.getHeight('2%'),
   },
 
   continueText: {
-    fontFamily: Fonts.poppinsBemiBold,
-    fontSize: 16,
-    color: AppColors.whiteClr,
+    fontFamily: Theme.typography.subheading.fontFamily,
+    fontSize: Responsive.AppFonts.t1,
+    color: Theme.colors.white,
   },
 
   // Resend code text/link (footer area)
@@ -91,15 +90,15 @@ export const forgotPasswordCodeStyles = StyleSheet.create({
   },
 
   resendText: {
-    fontFamily: Fonts.poppinsRegular,
-    fontSize: 13,
-    color: AppColors.blackClr,
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.text,
   },
 
   resendLink: {
-    fontFamily: Fonts.poppinsMedium,
-    fontSize: 13,
-    color: AppColors.primaryClr,
-    marginLeft: 3,
+    fontFamily: Theme.typography.medium.fontFamily,
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.primary,
+    marginLeft: Responsive.getWidth('1%'),
   },
 });

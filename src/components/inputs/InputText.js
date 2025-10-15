@@ -4,6 +4,7 @@ import { AppIcons } from '../../constants/icons';
 import { Responsive, Theme } from '../../libs';
 
 const InputText = ({
+  customStyles,
   placeholder,
   value,
   onChangeText,
@@ -22,7 +23,7 @@ const InputText = ({
     <View>
       {heading && <Text style={styles.heading}>{heading}</Text>}
 
-      <View style={[styles.container, isInvalid && styles.errorBorder]}>
+      <View style={[styles.container, isInvalid && styles.errorBorder, customStyles]}>
         {/* 👈 Left Icon */}
         {leftIcon && <Image source={leftIcon} style={styles.leftIcon} />}
 
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: Theme.borders.width,
     borderColor: Theme.colors.borderClr,
-    borderRadius: Theme.borders.regularRadius,
+    borderRadius: Theme.borders.mediumRadius,
     paddingHorizontal: Responsive.getWidth('3.5%'),
     height: Responsive.getHeight('6%'),
     marginBottom: Responsive.getHeight('2%'),

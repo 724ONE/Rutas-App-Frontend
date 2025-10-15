@@ -4,7 +4,7 @@ import { Responsive, Theme,  } from '../../libs';
 const FloatingActionButton = ({
   icon,
   size = Responsive.getWidth('13%'),
-  iconSize = Responsive.getWidth('6%'),
+  iconSize = Responsive.getWidth('7%'),
   backgroundColor = Theme.colors.primary,
   iconColor = Theme.colors.white,
   onPress,

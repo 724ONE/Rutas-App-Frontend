@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Responsive, Theme } from '../../libs';
 import RootView from '../../components/RootView';
 import HeaderCard from '../../components/HeaderCard';
@@ -11,13 +11,18 @@ import TextButton from '../../components/buttons/TextButton';
 import FloatingActionButton from '../../components/buttons/FloatingActionButton';
 import { AppIcons } from '../../constants/icons';
 import Routes from '../../navigation/routes';
+import Context from '../../context';
+import MyMapView from '../../components/MyMapView';
 
 const HomeScreen = ({ navigation }) => {
+    const { languageString } = React.useContext(Context);
     const dashboardData = [
         {
             title: 'Saved',
             value: '3',
-            bg: '#FFF4D4',
+            bg: '#F5A6231A',
+            iconBg: '#F5A62333',
+            textClr: '#F5A623',
             iconColor: Theme.colors.primary,
             icon: AppIcons.mapLocation,
             onPress: () => navigation.navigate(Routes.savedLocation),
@@ -25,7 +30,9 @@ const HomeScreen = ({ navigation }) => {
         {
             title: 'Routes',
             value: '5',
-            bg: '#E6EEFF',
+            bg: '#007AFF1A',
+            iconBg: '#007AFF33',
+            textClr: '#007AFF',
             iconColor: Theme.colors.lightSky,
             icon: AppIcons.list,
             onPress: () => navigation.navigate(Routes.savedLocation),
@@ -33,7 +40,9 @@ const HomeScreen = ({ navigation }) => {
         {
             title: 'Completed Routes',
             value: '12',
-            bg: '#E9F8ED',
+            bg: '#34C7591A',
+            iconBg: '#34C75933',
+            textClr: '#34C759',
             iconColor: Theme.colors.success,
             icon: AppIcons.greenTick,
             onPress: () => navigation.navigate(Routes.savedLocation),
@@ -76,10 +85,11 @@ const HomeScreen = ({ navigation }) => {
     return (
         <RootView
             statusColor={Theme.colors.primary}
-            backgroundColor={Theme.colors.screenBg}
-            isInBottomTab={true}>
-                 {/* ✅ Manually control status bar */}
-    
+            backgroundColor={Theme.colors.primary}
+            isInBottomTab={true}
+        >
+            {/* ✅ Manually control status bar */}
+
             {/* Fixed Header (outside ScrollView) */}
             <HeaderCard
                 name="Lorem"
@@ -100,20 +110,23 @@ const HomeScreen = ({ navigation }) => {
                 <SearchBar
                     placeholder="Search"
                     onPress={() => navigation.navigate(Routes.search)}
+                    containerStyle={{ marginBottom: Responsive.getHeight('0%') }}
                 />
 
                 {/* Map View */}
-                <View style={styles.mapBox}>
-                    <Heading title="Map View" customStyles={styles.headingText} />
+                {/* <View style={styles.mapBox}>
+                    <Heading title={languageString?.home?.mapView} customStyles={styles.headingText} />
                     <TouchableOpacity
                         style={styles.mapPlaceholder}
                         onPress={() => navigation.navigate(Routes.mapViewScreen)}
                     />
-                </View>
+                </View> */}
+
+                <MyMapView navigation={navigation} />
 
                 {/* Dashboard */}
                 <Heading
-                    title="Dashboard"
+                    title={languageString?.home?.dashboard}
                     customStyles={[styles.headingText, { marginTop: Responsive.getHeight('1.5%') }]}
                 />
 
@@ -127,11 +140,13 @@ const HomeScreen = ({ navigation }) => {
 
                 {/* Saved Locations */}
                 <View style={styles.savedHeader}>
-                    <Heading title="Saved Locations" customStyles={styles.headingText} />
+                    <Heading title={languageString?.home?.savedLocations} customStyles={styles.headingText} />
                     <TextButton
-                        text="View All"
+                        text={languageString?.home?.viewAll}
                         onPress={() => navigation.navigate(Routes.savedLocation)}
-                        customStyles={{ marginBottom: 0 }}
+                        customStyles={{
+                            //    alignSelf: 'flex-end',
+                        }}
                         textStyles={styles.viewAllText}
                     />
                 </View>
@@ -175,8 +190,8 @@ const styles = StyleSheet.create({
         marginTop: Responsive.getHeight('2%'),
     },
     headingText: {
-        fontFamily: Theme.typography.subheading.fontFamily,
-        fontSize: Responsive.AppFonts.h5,
+        fontFamily: Theme.typography.medium.fontFamily,
+        fontSize: Responsive.AppFonts.t1,
         color: Theme.colors.text,
         marginBottom: Responsive.getHeight('0.8%'),
     },
@@ -189,21 +204,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginTop: Responsive.getHeight('1.5%'),
+        marginTop: Responsive.getHeight('1%'),
     },
     dashboardItem: {
-        width: '48%',
+        width: '49%',
         marginBottom: Responsive.getHeight('1.5%'),
     },
     savedHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: Responsive.getHeight('2%'),
-        marginBottom: Responsive.getHeight('1%'),
+        // alignItems: 'center',
+        marginTop: Responsive.getHeight('1%'),
     },
     viewAllText: {
         fontFamily: Theme.typography.body.fontFamily,
+        includeFontPadding: false,
+        alignSelf: 'flex-end',
         fontSize: Responsive.AppFonts.t1,
         color: Theme.colors.primary,
     },

@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Heading from '../../components/text/Heading';
 import InstructionText from '../../components/text/InstructionText';
 import InputText from '../../components/inputs/InputText';
 import SocialLoginButtons from '../../components/buttons/SocialLoginButtons';
-import { AppIcons } from '../../constants/icons';
-import { loginStyles } from './Styles'
-import AppColors from '../../constants/colors';
-import Routes from '../../navigation/routes';
 import TextButton from '../../components/buttons/TextButton';
-import Fonts from '../../constants/fonts';
+import { AppIcons } from '../../constants/icons';
+import { Theme, Responsive } from '../../libs';
+import Context from '../../context';
+import Routes from '../../navigation/routes';
+import { loginStyles } from './Styles';
+import RootView from '../../components/RootView';
+import { PrimaryButton } from '../../components/buttons/PrimaryButton';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { languageString } = React.useContext(Context);
+
+  const [email, setEmail] = useState(__DEV__ ? 'test@gmail.com':"");
+  const [password, setPassword] = useState(__DEV__ ? '123456':"");
   const [invalid, setInvalid] = useState(false);
 
   const handleLogin = () => {
@@ -27,86 +27,99 @@ const Login = ({ navigation }) => {
       setInvalid(false);
       navigation.replace(Routes.customBottomNav);
     }
-  };
+  }
 
-  const isFilled = email && password;
+  const isFilled = !!(email && password);
 
   return (
+    <RootView>
+      <View style={loginStyles.container}>
+        {/* Header */}
+        <Heading
+          title={languageString?.auth?.loginTitle}
+          customStyles={{
+            fontFamily: Theme.typography.heading.fontFamily,
+            fontSize: Responsive.AppFonts.h2,
+            marginBottom: 0,
+          }}
+        />
 
-    <View style={loginStyles.container}>
+        {/* Description */}
+        <InstructionText
+          text={languageString?.auth?.loginDescription}
+          customStyles={{
+            fontFamily: Theme.typography.medium.fontFamily,
+            color: Theme.colors.text,
+            marginBottom: Responsive.getHeight('2%'),
+            marginTop: Responsive.getHeight('1.5%'),
+            fontSize: Responsive.AppFonts.t1,
+          }}
+        />
 
-      <Heading title="Login" />
+        {/* Email Input */}
+        <InputText
+          heading="Email"
+          placeholder={languageString?.auth?.emailPlaceholder}
+          value={email}
+          onChangeText={setEmail}
+          leftIcon={AppIcons.email}
+          keyboardType="email-address"
+          isInvalid={invalid}
+        />
 
-      <InstructionText text="Enter your details to get access." customStyles={{
-        fontFamily: Fonts.poppinsMedium,
-        color: AppColors.blackClr,
-        marginBottom: 20
-      }}
-      />
+        {/* Password Input */}
+        <InputText
+          heading="Password"
+          placeholder={languageString?.auth?.passwordPlaceholder}
+          value={password}
+          onChangeText={setPassword}
+          leftIcon={AppIcons.password}
+          secureTextEntry
+          showToggle
+          isInvalid={invalid}
+        />
 
-      <InputText
-        heading={'Emial'}
-        placeholder="Enter email"
-        value={email}
-        onChangeText={setEmail}
-        icon={AppIcons.email}
-        keyboardType="email-address"
-        isInvalid={invalid}
-      />
+        {/* Forgot Password */}
+        <TextButton
+          onPress={() => navigation.navigate(Routes.forgotPassword)}
+          text={languageString?.auth?.forgotPassword}
+          customStyles={{ marginBottom: 15 }}
+          textStyles={{
+            fontSize: Responsive.AppFonts.t2,
+            color: Theme.colors.primary,
+            fontFamily: Theme.typography.body.fontFamily,
+          }}
+        />
 
-      <InputText
-        heading={'Password'}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        icon={AppIcons.password}
-        secureTextEntry
-        showToggle
-        isInvalid={invalid}
-      />
+        {/* Login Button */}
+        <PrimaryButton
+          text={languageString?.auth?.loginButton}
+          btnFun={handleLogin}
+          isDisabled={!isFilled}
+          customStyles={[
+            loginStyles.loginButton,
+            { backgroundColor: isFilled ? Theme.colors.primary : Theme.colors.primaryBtnDisableClr },
+          ]}
+          textStyles={loginStyles.loginText}
+        />
 
-      <TextButton onPress={() => {
-        navigation.navigate(Routes.forgotPassword)
-      }} isInvalid={invalid}
-        text={'Forgot the password?'}
-        customStyles={{
-          marginBottom: 15,
-        }}
-        textStyles={{
-          fontSize: 12,
-          color: AppColors.primaryClr,
-          fontFamily: Fonts.poppinsRegular,
-        }}
-      />
+        {/* Social Login */}
+        <SocialLoginButtons />
 
-      <TouchableOpacity
-        style={[
-          loginStyles.loginButton,
-          { backgroundColor: isFilled ? AppColors.primaryClr : '#bfbfbf' },
-        ]}
-        onPress={handleLogin}
-        disabled={!isFilled}
-      >
-        <Text style={loginStyles.loginText}>Login</Text>
-
-      </TouchableOpacity>
-
-      <SocialLoginButtons />
-
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 20 }}>
-        <Text style={loginStyles.signupText}>
-          Don’t have an account?{' '}
-          <Text
-            style={loginStyles.signupLink}
-            onPress={() => navigation.navigate(Routes.register)} >
-            Signup
+        {/* Signup Text */}
+        <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: Responsive.getHeight('3%') }}>
+          <Text style={loginStyles.signupText}>
+            Don’t have an account?{' '}
+            <Text
+              style={loginStyles.signupLink}
+              onPress={() => navigation.navigate(Routes.register)} >
+              Signup
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
-    </View>
+    </RootView>
   );
 };
 
 export default Login;
-
-

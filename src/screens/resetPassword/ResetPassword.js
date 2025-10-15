@@ -3,86 +3,107 @@ import {
     View,
     Text,
     StyleSheet,
-    TextInput,
-    TouchableOpacity,
     Modal,
+    Alert,
+    Image,
 } from 'react-native';
 import RootView from '../../components/RootView';
-import IconButton from '../../components/buttons/IconButton';
-import PrimaryButton from '../../components/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/buttons/PrimaryButton';
+import Routes from '../../navigation/routes';
 import { AppIcons } from '../../constants/icons';
 import { Theme, Responsive } from '../../libs';
-import Fonts from '../../constants/fonts';
+import Context from '../../context';
+import InputText from '../../components/inputs/InputText';
+import InstructionText from '../../components/text/InstructionText';
+import { CustomBackButton } from '../../components/buttons/BackButton';
+import Heading from '../../components/text/Heading';
 
 const ResetPassword = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [showNewPass, setShowNewPass] = useState(false);
-    const [showConfirmPass, setShowConfirmPass] = useState(false);
+    // visibility toggles handled inside InputText component; remove local unused state
     const [showModal, setShowModal] = useState(false);
 
+    const { languageString } = React.useContext(Context);
+
     const handleSave = () => {
-        if (newPassword && confirmPassword && newPassword === confirmPassword) {
-            setShowModal(true);
+        if (!newPassword || !confirmPassword) {
+            Alert.alert(
+                languageString?.errors?.errorTitle || 'Error',
+                languageString?.errors?.pleaseFillFields || 'Please fill in all fields.'
+            );
+            return;
         }
+
+        if (newPassword !== confirmPassword) {
+            Alert.alert(
+                languageString?.errors?.errorTitle || 'Error',
+                languageString?.errors?.passwordMismatch || 'Passwords do not match.'
+            );
+            return;
+        }
+
+        setShowModal(true);
     };
 
     return (
         <RootView backgroundColor={Theme.colors.screenBg} statusColor={Theme.colors.primary}>
-            {/* Header */}
-            <View style={styles.header}>
-                <IconButton
-                    icon={AppIcons.backArrow}
-                    onPress={() => navigation.goBack()}
-                    backgroundColor={Theme.colors.white}
-                    size={Responsive.getWidth('10%')}
-                    iconSize={Responsive.getWidth('4%')}
-                    borderRadius={Theme.borders.fullRadius}
-                />
-                <Text style={styles.headerTitle}>Reset Password</Text>
-            </View>
 
             {/* Content */}
             <View style={styles.content}>
-                <Text style={styles.infoText}>You can now reset your password.</Text>
+                {/* Header */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: Responsive.getHeight('2%') }}>
+                    <CustomBackButton />
+                    <Heading
+                        title={"Reset Password"}
+                        customStyles={{
+                            marginLeft: Responsive.getWidth('3%'),
+                            fontSize: Responsive.AppFonts.h3,
+                            fontFamily: Theme.typography.subheading.fontFamily,
+                            marginBottom: 0,
+                        }}
+                    />
+                </View>
+
+                {/* Subtitle */}
+                <InstructionText
+                    text={languageString?.auth?.resetPasswordInfo}
+                    customStyles={{
+                        fontFamily: Theme.typography.medium.fontFamily,
+                        color: Theme.colors.text,
+                        marginBottom: Responsive.getHeight('2%'),
+                        fontSize: Responsive.AppFonts.t1,
+                    }}
+                />
+
+
 
                 {/* New Password */}
-                <Text style={styles.label}>New password</Text>
-                <View style={styles.inputContainer}>
-                    <AppIcons.lock width={20} height={20} color={Theme.colors.secondryText} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Enter your password"
-                        secureTextEntry={!showNewPass}
-                        placeholderTextColor={Theme.colors.hintText}
-                        value={newPassword}
-                        onChangeText={setNewPassword}
-                    />
-                    <TouchableOpacity onPress={() => setShowNewPass(!showNewPass)}>
-                        <AppIcons.eye width={20} height={20} color={Theme.colors.secondryText} />
-                    </TouchableOpacity>
-                </View>
+                <InputText
+                    heading={languageString?.auth?.newPasswordLabel}
+                    placeholder={languageString?.auth?.passwordPlaceholder}
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                    leftIcon={AppIcons.lock}
+                    showToggle
+                    isInvalid={false}
+                />
 
                 {/* Confirm Password */}
-                <Text style={[styles.label, { marginTop: Responsive.getHeight('2%') }]}>Confirm password</Text>
-                <View style={styles.inputContainer}>
-                    <AppIcons.lock width={20} height={20} color={Theme.colors.secondryText} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Enter your password"
-                        secureTextEntry={!showConfirmPass}
-                        placeholderTextColor={Theme.colors.hintText}
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                    />
-                    <TouchableOpacity onPress={() => setShowConfirmPass(!showConfirmPass)}>
-                        <AppIcons.eye width={20} height={20} color={Theme.colors.secondryText} />
-                    </TouchableOpacity>
-                </View>
+                <InputText
+                    heading={languageString?.auth?.confirmPasswordLabel}
+                    placeholder={languageString?.auth?.passwordPlaceholder}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    leftIcon={AppIcons.lock}
+                    showToggle
+                    isInvalid={false}
+                />
 
                 {/* Save Button */}
                 <PrimaryButton
-                    text="Save"
+                    isDisabled={!(newPassword && confirmPassword)}
+                    text={languageString?.common?.save}
                     btnFun={handleSave}
                     customStyles={{ marginTop: Responsive.getHeight('4%'), width: '100%' }}
                 />
@@ -93,17 +114,21 @@ const ResetPassword = ({ navigation }) => {
                 <View style={styles.modalBackground}>
                     <View style={styles.modalContainer}>
                         <View style={styles.iconCircle}>
-                            <AppIcons.check width={24} height={24} color={Theme.colors.white} />
+                            <Image
+                                source={AppIcons.circleTick}
+                                style={{ width: Responsive.getWidth('6%'), height: Responsive.getWidth('6%'), tintColor: Theme.colors.white }}
+                                resizeMode="contain"
+                            />
                         </View>
-                        <Text style={styles.modalTitle}>Password Updated</Text>
-                        <Text style={styles.modalMessage}>Your password has been updated successfully.</Text>
+                        <Text style={styles.modalTitle}>{languageString?.auth?.passwordUpdatedTitle}</Text>
+                        <Text style={styles.modalMessage}>{languageString?.auth?.passwordUpdatedMessage}</Text>
                         <PrimaryButton
-                            text="Login"
+                            text={languageString?.common?.login}
                             btnFun={() => {
                                 setShowModal(false);
-                                navigation.navigate('Login');
+                                navigation.navigate(Routes.login);
                             }}
-                            customStyles={{ width: '80%', marginTop: Responsive.getHeight('3%') }}
+                            customStyles={{ width: Responsive.getWidth('78%'), marginTop: Responsive.getHeight('3%') }}
                         />
                     </View>
                 </View>
@@ -127,7 +152,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         flex: 1,
         textAlign: 'center',
-        fontFamily: Fonts.poppinsSemiBold,
+        fontFamily: Theme.typography.subheading.fontFamily,
         fontSize: Responsive.AppFonts.h5,
         color: Theme.colors.white,
         marginRight: Responsive.getWidth('10%'),
@@ -138,34 +163,18 @@ const styles = StyleSheet.create({
         paddingTop: Responsive.getHeight('3%'),
     },
     infoText: {
-        fontFamily: Fonts.poppinsRegular,
+        fontFamily: Theme.typography.body.fontFamily,
         fontSize: Responsive.AppFonts.t2,
         color: Theme.colors.secondryText,
         marginBottom: Responsive.getHeight('2%'),
     },
     label: {
-        fontFamily: Fonts.poppinsSemiBold,
+        fontFamily: Theme.typography.subheading.fontFamily,
         fontSize: Responsive.AppFonts.t2,
         color: Theme.colors.text,
         marginBottom: Responsive.getHeight('0.5%'),
     },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: Theme.borders.width,
-        borderColor: Theme.colors.borderClr,
-        borderRadius: Theme.borders.mediumRadius,
-        paddingHorizontal: Responsive.getWidth('3%'),
-        height: Responsive.getHeight('6%'),
-        backgroundColor: Theme.colors.white,
-    },
-    input: {
-        flex: 1,
-        fontFamily: Fonts.poppinsRegular,
-        fontSize: Responsive.AppFonts.t2,
-        color: Theme.colors.text,
-        marginLeft: Responsive.getWidth('2%'),
-    },
+    // inputContainer and input styles removed in favor of reusable InputText component
 
     // Modal Styles
     modalBackground: {
@@ -177,7 +186,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: Theme.colors.white,
         width: '85%',
-        borderRadius: Theme.borders.largeRadius,
+        borderRadius: Theme.borders.mediumRadius,
         alignItems: 'center',
         padding: Responsive.getWidth('6%'),
     },
@@ -191,15 +200,15 @@ const styles = StyleSheet.create({
         marginBottom: Responsive.getHeight('2%'),
     },
     modalTitle: {
-        fontFamily: Fonts.poppinsSemiBold,
-        fontSize: Responsive.AppFonts.h5,
+        fontFamily: Theme.typography.subheading.fontFamily,
+        fontSize: Responsive.AppFonts.t1,
         color: Theme.colors.text,
         marginBottom: Responsive.getHeight('1%'),
     },
     modalMessage: {
-        fontFamily: Fonts.poppinsRegular,
+        fontFamily: Theme.typography.body.fontFamily,
         fontSize: Responsive.AppFonts.t2,
-        color: Theme.colors.secondryText,
+        color: Theme.colors.black,
         textAlign: 'center',
     },
 });

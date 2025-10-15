@@ -4,10 +4,11 @@ import {
     Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AppColors from "../../constants/colors";
+import { Theme, Responsive } from '../../libs';
 import { AppIcons } from "../../constants/icons";
 
 export function CustomBackButton({ customStyles, changesAlert, changesAlertfun }) {
+
     const navigation = useNavigation();
 
     return (
@@ -44,9 +45,9 @@ const styles = StyleSheet.create({
         // marginTop:5
     },
     imageContainer: {
-        height: 18,
-        width: 18,
+        height: Responsive.getWidth('4%'),
+        width: Responsive.getWidth('4%'),
         resizeMode: 'contain',
-        tintColor: AppColors.primaryClr
+        tintColor: Theme.colors.primary,
     },
 })

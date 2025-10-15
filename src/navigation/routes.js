@@ -15,8 +15,8 @@ const Routes = {
     editProfile: 'EditProfile',
     search: 'Search',
     savedLocation: 'SavedLocation',
-    mapViewScreen: 'AddLocation',
-    addLocation: 'MapViewScreen',
-
+    mapViewScreen: 'MapViewScreen',
+    addLocation: 'AddLocation',
+    history: 'History',
 }
 export default Routes;

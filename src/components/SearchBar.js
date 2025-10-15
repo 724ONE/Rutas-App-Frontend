@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {  Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Theme, Responsive } from '../libs';
 import { AppIcons } from '../constants/icons';
 
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     borderRadius: Theme.borders.normalRadius,
     paddingHorizontal: Responsive.getWidth('3%'),
     height: Responsive.getHeight('5.5%'),
+    marginTop: Responsive.getHeight('2%'),
     marginVertical: Responsive.getHeight('1.5%'),
   },
   icon: {

@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { AppIcons } from '../../constants/icons'
-import AppColors from '../../constants/colors'
+import { Responsive, Theme } from '../../libs';
 const { width } = Dimensions.get('window');
 
 const SplashScreen = ({ navigation }) => {
@@ -33,7 +33,7 @@ const SplashScreen = ({ navigation }) => {
       />
 
       {/* Loader */}
-      <ActivityIndicator size="large" color={AppColors.primaryClr} style={styles.loader} />
+      <ActivityIndicator size="large" color={Theme.colors.primary} style={styles.loader} />
 
       {/* Progress Bar */}
       {/* <View style={styles.progressBarContainer}>
@@ -48,13 +48,12 @@ export default SplashScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.whiteClr,
+    backgroundColor: Theme.colors.white,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    width: width * 0.55,
-    height: width * 0.55,
+    height: Responsive.getWidth('55%'),
   },
   loader: {
     position: 'absolute',
@@ -65,14 +64,14 @@ const styles = StyleSheet.create({
     bottom: 50,
     width: width * 0.9,
     height: 5,
-    backgroundColor: AppColors.whiteClr,
+    backgroundColor: Theme.colors.white,
     borderRadius: 10,
     overflow: 'hidden',
   },
   progressBar: {
     width: '40%',
     height: '100%',
-    backgroundColor: AppColors.primaryClr,
+    backgroundColor: Theme.colors.primaryClr,
     borderRadius: 10,
   },
 });

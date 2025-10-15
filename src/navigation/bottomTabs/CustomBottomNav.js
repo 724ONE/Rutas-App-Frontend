@@ -8,6 +8,8 @@ import Profile from '../../screens/profile/Profile';
 import { AppIcons } from '../../constants/icons';
 import { Responsive, Theme } from '../../libs';
 import Routes from '../routes';
+import History from '../../screens/history/History';
+import Context from '../../context';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,8 +46,8 @@ const CustomBottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.notifications}
-        component={Notifications}
+        name={Routes.history}
+        component={History}
         options={{
           tabBarIcon: ({ focused }) =>
             bottomTabItem(focused, AppIcons.notifications, 'History', 22),

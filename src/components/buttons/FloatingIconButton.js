@@ -1,22 +1,22 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, Image } from 'react-native';
-import AppColors from '../../constants/colors';
+import { TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Responsive, Theme } from '../../libs';
 import { AppIcons } from '../../constants/icons';
 
 const FloatingIconButton = ({
-    icon = AppIcons.location, // default icon
-    size = 50,
-    backgroundColor = AppColors.whiteClr,
-    iconColor = AppColors.primaryClr,
-    style,
+    icon,
+    size = Responsive.getWidth('13%'),
+    iconSize = Responsive.getWidth('6.5%'),
+    backgroundColor = Theme.colors.white,
+    iconColor = Theme.colors.primary,
     onPress,
+    style,
 }) => {
     return (
         <TouchableOpacity
             activeOpacity={0.8}
             onPress={onPress}
             style={[
-                styles.container,
+                styles.fab,
                 {
                     backgroundColor,
                     width: size,
@@ -28,14 +28,11 @@ const FloatingIconButton = ({
         >
             <Image
                 source={AppIcons.mapLocation}
-                style={[
-                    styles.icon,
-                    {
-                        tintColor: iconColor,
-                        width: size * 0.5,
-                        height: size * 0.5,
-                    },
-                ]}
+                style={{
+                    width: iconSize,
+                    height: iconSize,
+                    tintColor: iconColor,
+                }}
                 resizeMode="contain"
             />
         </TouchableOpacity>
@@ -45,16 +42,13 @@ const FloatingIconButton = ({
 export default FloatingIconButton;
 
 const styles = StyleSheet.create({
-    container: {
+    fab: {
         alignItems: 'center',
         justifyContent: 'center',
-        elevation: 5,
-        shadowColor: AppColors.shadowColor,
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.15,
-        shadowRadius: 5,
-    },
-    icon: {
-        tintColor: AppColors.primaryClr,
+        shadowColor: Theme.colors.shodowClr,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: Theme.elevation.medium,
     },
 });

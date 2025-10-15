@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Theme.colors.white,
         paddingTop: Responsive.getHeight('3%'),
-        paddingBottom: Responsive.getHeight('3%'),
+        // paddingBottom: Responsive.getHeight('3%'),
         // borderBottomLeftRadius: Theme.borders.largeRadius,
         // borderBottomRightRadius: Theme.borders.largeRadius,
         // ...Theme.shadows.medium,
@@ -32,15 +32,15 @@ const styles = StyleSheet.create({
         width: Responsive.getWidth('25%'),
         height: Responsive.getWidth('25%'),
         borderRadius: Responsive.getWidth('12.5%'),
-        marginTop: Responsive.getHeight('2%'),
+        marginTop: Responsive.getHeight('0%'),
         borderWidth: Theme.borders.width,
         borderColor: Theme.colors.white,
     },
     name: {
         marginTop: Responsive.getHeight('1.5%'),
-        fontSize: Responsive.AppFonts.h5,
+        fontSize: Responsive.AppFonts.h4,
         color: Theme.colors.text,
-        fontFamily: Theme.typography.subheading.fontFamily,
+        fontFamily: Theme.typography.medium.fontFamily,
     },
 });
 

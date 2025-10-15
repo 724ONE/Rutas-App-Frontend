@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, StatusBar } from 'react-native';
+import Context from '../context';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import IconButton from '../components/buttons/IconButton';
 import Routes from '../navigation/routes';
 import { useNavigation } from '@react-navigation/native';
@@ -8,18 +9,15 @@ import { AppIcons } from '../constants/icons';
 
 const HeaderCard = ({ name, image }) => {
   const navigation = useNavigation();
+  const { languageString } = React.useContext(Context);
   return (
     <View style={styles.header}>
-      <StatusBar
-        translucent={false}
-        backgroundColor={Theme.colors.primary}
-      // barStyle="light-content"
-      />
+      {/* StatusBar controlled centrally by RootView to avoid overrides */}
       <View style={styles.left}>
         <Image source={image} style={styles.profileImg} />
         <View>
-          <Text style={styles.welcome}>Welcome Back!</Text>
-          <Text style={styles.username}>Hello! {name}</Text>
+          <Text style={styles.welcome}>{languageString?.labels?.welcomeBack || 'Welcome Back!'}</Text>
+          <Text style={styles.username}>{languageString?.labels?.welcomeBack ? `Hello! ${name}` : `Hello! ${name}`}</Text>
         </View>
       </View>
 
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Responsive.getWidth('5%'),
     paddingVertical: Responsive.getHeight('2.5%'),
-    paddingTop: Responsive.getHeight('5%'),
+    // paddingTop: Responsive.getHeight('5%'),
   },
   left: {
     flexDirection: 'row',

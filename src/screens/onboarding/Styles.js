@@ -1,155 +1,150 @@
-import {
-    StyleSheet,
-    Dimensions,
-} from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Theme, Responsive } from '../../libs'
 
-import Fonts from '../../constants/Fonts'
-import Colors from '../../constants/colors'
-
-const { width, height } = Dimensions.get('window');
-
-export const styleOnBording = StyleSheet.create({
+export const styleOnBoarding = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: Theme.colors.screenBg,
     },
     screen: {
-        width,
+        width: Responsive.width,
         justifyContent: 'center',
         alignItems: 'center',
     },
     content: {
-        height: height * 0.5,
+        height: Responsive.getHeight('50%'),
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 60,
-        paddingBottom: 20,
+        paddingHorizontal: Responsive.getWidth('5%'),
+        paddingTop: Responsive.getHeight('6%'),
+        paddingBottom: Responsive.getHeight('2%'),
     },
+
     textContainer: {
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 10,
+        paddingHorizontal: Responsive.getWidth('5%'),
+        paddingTop: Responsive.getHeight('2%'),
     },
+
     title: {
-        fontSize: 24,
-        fontFamily: Fonts.bold,
-        color: '#333333',
+        fontSize: Responsive.font(2.8),
+        fontFamily: Theme.typography.heading.fontFamily,
+        color: Theme.colors.textPrimary,
         textAlign: 'center',
-        marginBottom: 5,
-        lineHeight: 40,
+        marginBottom: Responsive.getHeight('1%'),
+        lineHeight: Responsive.font(4),
     },
+
     description: {
-        fontSize: 16,
-        fontFamily: Fonts.regular,
-        color: '#666666',
+        fontSize: Responsive.font(1.8),
+        fontFamily: Theme.typography.body.fontFamily,
+        color: Theme.colors.textSecondary,
         textAlign: 'center',
-        lineHeight: 24,
+        lineHeight: Responsive.font(2.5),
     },
+
     paginationContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 20,
-        marginBottom: 20,
+        paddingVertical: Responsive.getHeight('2%'),
+        marginBottom: Responsive.getHeight('2%'),
     },
+
     paginationDot: {
-        height: 8,
-        borderRadius: 4,
-        marginHorizontal: 4,
+        height: Responsive.getWidth('2%'),
+        borderRadius: Responsive.getWidth('1%'),
+        marginHorizontal: Responsive.getWidth('1%'),
     },
+
     activeDot: {
-        width: 24,
-        backgroundColor: Colors.primaryClr,
+        width: Responsive.getWidth('6%'),
+        backgroundColor: Theme.colors.primary,
     },
+
     inactiveDot: {
-        width: 8,
-        backgroundColor: '#E0E0E0',
+        width: Responsive.getWidth('2.5%'),
+        backgroundColor: Theme.colors.grayLight,
     },
+
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 40,
+        paddingHorizontal: Responsive.getWidth('5%'),
+        paddingBottom: Responsive.getHeight('4%'),
     },
+
     skipButton: {
-        paddingVertical: 9,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        backgroundColor: '#F5F5F5',
+        paddingVertical: Responsive.getHeight('1.2%'),
+        paddingHorizontal: Responsive.getWidth('5%'),
+        borderRadius: Theme.borders.mediumRadius,
+        backgroundColor: Theme.colors.grayLightest,
     },
+
     skipButtonText: {
-        fontSize: 16,
-        fontFamily: Fonts.semiBold,
-        color: '#333333',
+        fontSize: Responsive.font(1.8),
+        fontFamily: Theme.typography.medium.fontFamily,
+        color: Theme.colors.textPrimary,
     },
+
     nextButton: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: '#e0e4ff',
+        width: Responsive.getWidth('15%'),
+        height: Responsive.getWidth('15%'),
+        borderRadius: Responsive.getWidth('7.5%'),
+        backgroundColor: Theme.colors.secondaryLight,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 5,
+        padding: Responsive.getWidth('1.5%'),
     },
+
     nextButtonInner: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: Colors.primaryClr,
+        width: Responsive.getWidth('12.5%'),
+        height: Responsive.getWidth('12.5%'),
+        borderRadius: Responsive.getWidth('6.25%'),
+        backgroundColor: Theme.colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    // Circular image layout styles
+
     circleContainer: {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
     },
-    // Legacy styles for backward compatibility
+
     slide: {
-        width: 250,
-        height: 250,
+        width: Responsive.getWidth('65%'),
+        height: Responsive.getWidth('65%'),
         resizeMode: 'contain',
-        marginVertical: 20
+        marginVertical: Responsive.getHeight('2%'),
     },
-    titleContainer: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-        textAlign: 'center',
-        marginBottom: 10,
-    },
-    textContainer: {
-        fontSize: 16,
-        color: '#666',
-        textAlign: 'center',
-        paddingHorizontal: 10,
-    },
+
     dotContainer: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: '#ccc',
-        marginHorizontal: 5,
+        width: Responsive.getWidth('2.5%'),
+        height: Responsive.getWidth('2.5%'),
+        borderRadius: Responsive.getWidth('1.25%'),
+        backgroundColor: Theme.colors.grayMedium,
+        marginHorizontal: Responsive.getWidth('1%'),
     },
+
     activeDotContainer: {
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        backgroundColor: Colors.primaryClr,
-        marginHorizontal: 5,
+        width: Responsive.getWidth('3%'),
+        height: Responsive.getWidth('3%'),
+        borderRadius: Responsive.getWidth('1.5%'),
+        backgroundColor: Theme.colors.primary,
+        marginHorizontal: Responsive.getWidth('1%'),
     },
+
     customButtonWrapper: {
         position: 'absolute',
-        bottom: 20,
+        bottom: Responsive.getHeight('3%'),
         left: 0,
         right: 0,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: Responsive.getWidth('5%'),
     },
-});
+})

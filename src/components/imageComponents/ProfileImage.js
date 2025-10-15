@@ -7,7 +7,7 @@ import Context from "../context";
 import { fileURL } from "../constants/Domains";
 import { AppIcons } from "../constants/icons";
 // import CustomImage from "./CustomImage";
-import AppColors from "../../constants/colors";
+import { Theme } from '../../libs';
 
 export function ProfileImage({ customStyles }) {
     const { customerData } = useContext(Context);
@@ -15,7 +15,7 @@ export function ProfileImage({ customStyles }) {
         <Image
             source={!!customerData?.profile_image?.thumbnail_1 ? { uri: fileURL + customerData?.profile_image?.thumbnail_1 } : AppIcons.profile}
             indicatorProps={{
-                color: AppColors.primaryClr,
+                color: Theme.colors.primary,
             }}
             style={[styles.imageContainer, customStyles]}
             imageStyle={[styles.imageContainer, customStyles]}
@@ -26,8 +26,8 @@ export function ProfileImage({ customStyles }) {
 const styles = StyleSheet.create({
     imageContainer: {
         resizeMode: 'contain',
-        borderRadius: 8,
-        borderWidth: 0.5,
-        borderColor: AppColors.grey80Clr
+        borderRadius: Theme.borders.regularRadius,
+        borderWidth: Theme.borders.width,
+        borderColor: Theme.colors.border,
     },
 });

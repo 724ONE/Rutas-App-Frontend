@@ -2,11 +2,13 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Responsive, Theme } from '../../libs';
+import Context from '../../context';
 import RootView from '../../components/RootView';
 import AppHeader from '../../components/headers/AppHeader';
 import { AppIcons } from '../../constants/icons';
 
 const MapViewScreen = ({ navigation }) => {
+  const { languageString } = React.useContext(Context);
   const region = {
     latitude: 24.8607,
     longitude: 67.0011,
@@ -28,10 +30,16 @@ const MapViewScreen = ({ navigation }) => {
   ];
 
   return (
-    <RootView>
+    <RootView
+      statusColor={Theme.colors.primary}
+      backgroundColor={Theme.colors.primary}
+      barStyle="dark-content"
+      addBottomPadding={false}
+      innerViewColor={Theme.colors.screenBg}
+    >
       {/* Header */}
       <AppHeader
-        title="Map View"
+  title={languageString?.home?.mapView}
         backgroundColor={Theme.colors.primary}
         onBackPress={() => navigation.goBack()}
       />
@@ -50,7 +58,7 @@ const MapViewScreen = ({ navigation }) => {
             <Marker key={marker.id} coordinate={marker.coordinate} title={marker.title}>
               <View style={styles.markerWrapper}>
                 <Image
-                  source={AppIcons.locationPin}
+                  source={AppIcons.mapLocation}
                   style={styles.markerIcon}
                   resizeMode="contain"
                 />

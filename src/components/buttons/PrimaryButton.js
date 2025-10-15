@@ -24,7 +24,6 @@ export function PrimaryButton({
         style={[
           styles.textContainer,
           textStyles,
-          isDisabled && { color: Theme.colors.hintText },
         ]}
       >
         {text}
@@ -36,9 +35,9 @@ export function PrimaryButton({
 const styles = StyleSheet.create({
   buttonContainer: {
     height: Responsive.getHeight('6%'),
-    width: '90%',
+    width: Responsive.getWidth('90%'),
     alignSelf: 'center',
-    borderRadius: Theme.borders.normalRadius,
+    borderRadius: Theme.borders.mediumRadius,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Theme.colors.primary,

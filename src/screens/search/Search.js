@@ -8,14 +8,18 @@ import {
   Keyboard,
   Image,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { Theme, Responsive } from '../../libs';
+import Context from '../../context';
 import IconButton from '../../components/buttons/IconButton';
 import { AppIcons } from '../../constants/icons';
 import { PrimaryButton } from '../../components/buttons/PrimaryButton';
-import RootView from '../../components/RootView';
+import RootView from '../../components/RootView';  // Import RootView
+import AppHeader from '../../components/headers/AppHeader';
 
 const Search = ({ navigation }) => {
+  const { languageString } = React.useContext(Context);
   const inputRef = useRef(null);
 
   // Auto-focus input when screen opens
@@ -35,69 +39,75 @@ const Search = ({ navigation }) => {
 
   return (
     <RootView
+      addBottomPadding={false}
       statusColor={Theme.colors.primary}
-      backgroundColor={Theme.colors.white}
+      backgroundColor={Theme.colors.primary}
       innerViewColor={Theme.colors.screenBg}
-      paddingHorizontal={Responsive.getWidth('5%')}
+      barStyle="light-content"
     >
       {/* Header */}
-      <View style={styles.header}>
-        <IconButton
-          icon={AppIcons.backArrow}
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-          size={Responsive.sizeMatter.scale(32)}
-          iconSize={Responsive.sizeMatter.scale(14)}
-        />
-        <Text style={styles.headerTitle}>Search</Text>
-      </View>
+      <AppHeader
+        backgroundColor={Theme.colors.primary}
+        title={languageString?.common?.search}
+        rightIcon={false}
+        showBack={true}
+      />
 
-      {/* Search Input */}
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <IconButton
-            icon={AppIcons.search}
-            size={Responsive.sizeMatter.scale(18)}
-            style={styles.searchIcon}
-            iconColor={Theme.colors.primary}
-          />
-          <TextInput
-            ref={inputRef}
-            style={styles.searchInput}
-            placeholder="Search"
-            placeholderTextColor={Theme.colors.hintText}
-            returnKeyType="search"
-            onSubmitEditing={Keyboard.dismiss}
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: Responsive.getWidth('4%'),
+          paddingBottom: Responsive.getHeight('2%'),
+          backgroundColor: Theme.colors.screenBg,
+        }}
+      >
+        {/* Search Input */}
+        <View style={styles.searchContainer}>
+          <View style={styles.searchBar}>
+            <IconButton
+              icon={AppIcons.search}
+              size={Responsive.sizeMatter.scale(18)}
+              style={styles.searchIcon}
+              iconColor={Theme.colors.primary}
+            />
+            <TextInput
+              ref={inputRef}
+              style={styles.searchInput}
+              placeholder={languageString?.common?.search}
+              placeholderTextColor={Theme.colors.hintText}
+              returnKeyType="search"
+              onSubmitEditing={Keyboard.dismiss}
+            />
+          </View>
+        </View>
+
+        {/* Recent Searches */}
+        <View style={styles.recentContainer}>
+          <Text style={styles.recentTitle}>Recent Searches</Text>
+          <FlatList
+            data={recentSearches}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.recentItem}>
+                <Text style={styles.recentText}>{item}</Text>
+                <Image
+                  source={AppIcons.rightArrow}
+                  style={styles.rightArrow}
+                />
+              </TouchableOpacity>
+            )}
+            contentContainerStyle={{ paddingVertical: Responsive.sizeMatter.verticalScale(5) }}
+            showsVerticalScrollIndicator={false}
           />
         </View>
-      </View>
 
-      {/* Recent Searches */}
-      <View style={styles.recentContainer}>
-        <Text style={styles.recentTitle}>Recent Searches</Text>
-        <FlatList
-          data={recentSearches}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.recentItem}>
-              <Text style={styles.recentText}>{item}</Text>
-              <Image
-                source={AppIcons.rightArrow}
-                style={styles.rightArrow}
-              />
-            </TouchableOpacity>
-          )}
-          contentContainerStyle={{ paddingVertical: Responsive.sizeMatter.verticalScale(10) }}
-          showsVerticalScrollIndicator={false}
+        {/* Bottom Button */}
+        <PrimaryButton
+          text={'Search'}
+          btnFun={() => { }}
+          customStyles={styles.bottomButton}
         />
       </View>
-
-      {/* Bottom Button */}
-      <PrimaryButton
-        text={'Search'}
-        btnFun={() => { }}
-        customStyles={styles.bottomButton}
-      />
     </RootView>
   );
 };
@@ -105,27 +115,6 @@ const Search = ({ navigation }) => {
 export default Search;
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: Theme.colors.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Responsive.getHeight('2%'),
-    borderBottomLeftRadius: Theme.borders.fullRadius,
-    borderBottomRightRadius: Theme.borders.fullRadius,
-  },
-  backButton: {
-    backgroundColor: Theme.colors.white,
-    borderRadius: 999,
-    padding: Responsive.sizeMatter.scale(6),
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontFamily: Theme.typography.subheading.fontFamily,
-    fontSize: Responsive.AppFonts.h5,
-    color: Theme.colors.white,
-    marginRight: Responsive.getWidth('10%'),
-  },
   searchContainer: {
     marginTop: Responsive.getHeight('2%'),
   },
@@ -156,12 +145,12 @@ const styles = StyleSheet.create({
     fontFamily: Theme.typography.subheading.fontFamily,
     fontSize: Responsive.AppFonts.t1,
     color: Theme.colors.text,
-    marginBottom: Responsive.sizeMatter.verticalScale(5),
   },
   recentItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: Responsive.sizeMatter.scale(2),
     paddingVertical: Responsive.sizeMatter.verticalScale(10),
   },
   recentText: {
@@ -178,10 +167,7 @@ const styles = StyleSheet.create({
     marginLeft: Responsive.sizeMatter.scale(8),
   },
   bottomButton: {
-    width: '95%',
-    alignSelf: 'center',
-    height: Responsive.getHeight('6.5%'),
-    borderRadius: Theme.borders.normalRadius,
-    marginBottom: Responsive.getHeight('2%'),
+    marginBottom: Responsive.getHeight('4%'),
+    width: Responsive.getWidth('90%'),
   },
 });

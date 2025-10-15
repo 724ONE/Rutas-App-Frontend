@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Theme, Responsive } from '../../libs';
 import { CustomBackButton } from '../../components/buttons/BackButton';
 import Heading from '../../components/text/Heading';
 import { PrimaryButton } from '../../components/buttons/PrimaryButton';
 import RootView from '../../components/RootView';
-import { Color } from 'react-native/types_generated/Libraries/Animated/AnimatedExports';
+import Context from '../../context';
+import Routes from '../../navigation/routes';
 
 const ForgotPasswordCode = ({ navigation }) => {
+  const { languageString } = React.useContext(Context);
+  const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const inputRefs = useRef([]);
   const [timer, setTimer] = useState(59);
   const [isResendVisible, setIsResendVisible] = useState(false);
 
@@ -24,10 +27,49 @@ const ForgotPasswordCode = ({ navigation }) => {
   }, [timer]);
 
   const handleChange = (value, index) => {
-    if (isNaN(value)) return;
+    // Allow pasted values (multiple chars) and single-digit entries
+    const digits = value.replace(/[^0-9]/g, '');
+    if (!digits) return;
+
     const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
+
+    if (digits.length === 1) {
+      newOtp[index] = digits;
+      setOtp(newOtp);
+      // focus next
+      const nextIndex = index + 1;
+      if (nextIndex < inputRefs.current.length) {
+        inputRefs.current[nextIndex]?.focus();
+      }
+    } else {
+      // If multiple digits pasted, distribute them starting at index
+      let i = index;
+      for (const ch of digits) {
+        if (i >= newOtp.length) break;
+        newOtp[i] = ch;
+        i += 1;
+      }
+      setOtp(newOtp);
+      // focus the next empty or last filled
+      const focusIndex = Math.min(i, inputRefs.current.length - 1);
+      inputRefs.current[focusIndex]?.focus();
+    }
+  };
+
+  const handleKeyPress = ({ nativeEvent }, index) => {
+    if (nativeEvent.key === 'Backspace') {
+      if (otp[index] === '') {
+        const prevIndex = index - 1;
+        if (prevIndex >= 0) {
+          inputRefs.current[prevIndex]?.focus();
+        }
+      } else {
+        // clear current
+        const newOtp = [...otp];
+        newOtp[index] = '';
+        setOtp(newOtp);
+      }
+    }
   };
 
   const handleResend = () => {
@@ -43,12 +85,12 @@ const ForgotPasswordCode = ({ navigation }) => {
     <RootView>
       <View style={styles.container}>
         {/* Header */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Responsive.getHeight('2%') }}>
           <CustomBackButton />
           <Heading
-            title="Verify OTP"
+            title={languageString?.auth?.verifyOtpTitle || 'Verify OTP'}
             customStyles={{
-              marginLeft: 15,
+              marginLeft: Responsive.getWidth('3%'),
               marginBottom: 0,
             }}
           />
@@ -56,7 +98,7 @@ const ForgotPasswordCode = ({ navigation }) => {
 
         {/* Subtitle */}
         <Text style={styles.subtitle}>
-          We have sent an OTP to <Text style={styles.email}>johndoe@gmail.com</Text>
+          {languageString?.auth?.otpSentPart1 || 'We have sent an OTP to'} <Text style={styles.email}>{email || 'johndoe@gmail.com'}</Text>
         </Text>
 
         {/* OTP boxes */}
@@ -64,11 +106,13 @@ const ForgotPasswordCode = ({ navigation }) => {
           {otp.map((digit, index) => (
             <TextInput
               key={index}
+              ref={(el) => (inputRefs.current[index] = el)}
               style={styles.otpBox}
               keyboardType="numeric"
-              maxLength={1}
+              maxLength={6}
               value={digit}
               onChangeText={(value) => handleChange(value, index)}
+              onKeyPress={(e) => handleKeyPress(e, index)}
             />
           ))}
         </View>
@@ -76,35 +120,20 @@ const ForgotPasswordCode = ({ navigation }) => {
         {/* Resend */}
         <View style={styles.resendContainer}>
           {!isResendVisible ? (
-            <View style={{ width: '100%', justifyContent: 'space-between',flexDirection:'row' }}>
-              <Text style={styles.resendText}>Didn’t you receive the OTP?</Text>
+            <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
+              <Text style={styles.resendText}>{languageString?.auth?.didntReceiveOtp || "Didn't you receive the OTP?"}</Text>
               <Text style={styles.timer}> {formattedTime}</Text>
             </View>
           ) : (
-            <View style={{ width: '100%', justifyContent: 'space-between',flexDirection:'row' }}>
-              <Text style={styles.resendText}>Didn’t you receive the OTP? </Text>
-              <Text style={styles.resendLink} onPress={handleResend}>Resend OTP</Text>
+            <View style={{ width: '100%', justifyContent: 'space-between', flexDirection: 'row' }}>
+              <Text style={styles.resendText}>{languageString?.auth?.didntReceiveOtp || "Didn't you receive the OTP?"} </Text>
+              <Text style={styles.resendLink} onPress={handleResend}>{languageString?.auth?.resendOtp || 'Resend OTP'}</Text>
             </View>
           )}
         </View>
 
         {/* Submit button */}
-        <PrimaryButton text={'Verify & submit'} btnFun={() => {
-
-        }} customStyles={{
-          width: '100%',
-          // height: 32.0,
-          // borderRadius: 4,
-          // margin: 15,
-          // alignSelf: 'flex-end',
-        }}
-          textStyles={{
-            fontSize: 13,
-          }}
-        />
-        {/* <TouchableOpacity style={styles.submitBtn}>
-        <Text style={styles.submitText}>Verify & submit</Text>
-      </TouchableOpacity> */}
+        <PrimaryButton text={languageString?.auth?.verifySubmit || 'Verify & submit'} btnFun={() => { navigation.navigate(Routes.resetPassword) }} />
       </View>
     </RootView>
   );
@@ -115,9 +144,8 @@ export default ForgotPasswordCode;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.whiteClr,
-    paddingHorizontal: 15,
-    // paddingTop: 70,
+    backgroundColor: Theme.colors.white,
+    paddingHorizontal: Responsive.getWidth('5%'),
   },
   backBtn: {
     position: 'absolute',
@@ -125,23 +153,22 @@ const styles = StyleSheet.create({
     left: 25,
   },
   title: {
-    fontFamily: Fonts.poppinsSemiBold,
-    fontSize: 22,
-    color: AppColors.blackClr,
-    marginBottom: 10,
-    marginTop: 20,
+    fontFamily: Theme.typography.subheading.fontFamily,
+    fontSize: Responsive.AppFonts.h4,
+    color: Theme.colors.text,
+    marginBottom: Responsive.getHeight('1%'),
+    marginTop: Responsive.getHeight('2%'),
   },
   subtitle: {
-    fontFamily: Fonts.poppinsRegular,
-    fontSize: 14,
-    color: AppColors.blackClr,
-    marginBottom: 30,
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t1,
+    color: Theme.colors.text,
+    marginBottom: Responsive.getHeight('3%'),
   },
   email: {
-    color: AppColors.primaryClr,
-    fontFamily: Fonts.poppinsMedium,
+    color: Theme.colors.primary,
+    fontFamily: Theme.typography.medium.fontFamily,
     textDecorationLine: 'underline',
-
   },
   otpContainer: {
     flexDirection: 'row',
@@ -149,15 +176,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   otpBox: {
-    width: 45,
-    height: 55,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
+    width: Responsive.getWidth('12%'),
+    height: Responsive.getHeight('7%'),
+    borderWidth: Theme.borders.width,
+    borderColor: Theme.colors.borderClr,
+    borderRadius: Theme.borders.regularRadius,
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: Fonts.poppinsMedium,
-    color: AppColors.blackClr,
+    fontSize: Responsive.AppFonts.h5,
+    fontFamily: Theme.typography.medium.fontFamily,
+    color: Theme.colors.text,
+    textAlignVertical: 'center',
   },
   resendContainer: {
     flexDirection: 'row',
@@ -166,28 +194,17 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   resendText: {
-    fontFamily: Fonts.poppinsRegular,
-    fontSize: 14,
-    color: '#444',
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t1,
+    color: Theme.colors.black,
   },
   resendLink: {
-    color: AppColors.primaryClr,
-    fontFamily: Fonts.poppinsMedium,
+    color: Theme.colors.primary,
+    fontFamily: Theme.typography.medium.fontFamily,
   },
   timer: {
-    fontFamily: Fonts.poppinsRegular,
-    fontSize: 13,
-    color: '#444',
+    fontFamily: Theme.typography.body.fontFamily,
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.textLight,
   },
-  // submitBtn: {
-  //   backgroundColor: AppColors.primaryClr,
-  //   borderRadius: 10,
-  //   paddingVertical: 15,
-  //   alignItems: 'center',
-  // },
-  // submitText: {
-  //   color: AppColors.whiteClr,
-  //   fontFamily: Fonts.poppinsBemiBold,
-  //   fontSize: 16,
-  // },
 });

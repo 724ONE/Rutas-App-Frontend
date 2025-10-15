@@ -1,13 +1,13 @@
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import AppColors from '../../constants/colors';
+import { Theme, Responsive } from '../../libs';
 
-export function NativeLoaing() {
+export function NativeLoading() {
   return (
     <View style={styles.container}>
       <ActivityIndicator
         style={styles.spinner}
         size="large"
-        color={AppColors.primaryClr}
+        color={Theme.colors.primary}
       />
     </View>
   );
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   spinner: {
-    borderRadius: 8,
-    padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderRadius: Responsive.getWidth('2%'),
+    padding: Responsive.getWidth('3%'),
+    backgroundColor: Theme.colors.loadingBg || 'rgba(0,0,0,0.1)',
   },
 });

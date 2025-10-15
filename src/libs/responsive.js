@@ -69,6 +69,7 @@ const Responsive = {
     t1: moderateScale(14),
     t2: moderateScale(12),
     t3: moderateScale(10),
+    body: moderateScale(14),
   },
 
   sizeMatter: {

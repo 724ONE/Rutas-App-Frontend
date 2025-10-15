@@ -10,19 +10,21 @@
     "border": "#bdc3c7",
     "white": "#ffffff",
     "black": "#000",
-    "error": "#EC495D",
+    "error": "#e53935",
     "success": "#6CC070",
     "iconColor": "#555555",
     "dark": "#505050",
     "grey": "#D1D6D9",
     "transparent": "transparent",
     "primaryBtnDisableClr": "#72727280",
-    "inactiveIconClr": "#727272",
+    "inactiveIconClr": "#61616180",
     "secondryText": "#797979",
     "shodowClr": "rgba(0,0,0,0.4)",
     "borderClr": "#DBDBDB",
     "screenBg": "#fff",
-    "hintText": "#8E8E93"
+    "hintText": "#8E8E93",
+    "textLight": "#888888",
+    "lightBorder": "#EEEEEE"
   },
   "typography": {
     "heading": {
@@ -49,6 +51,7 @@
   "borders": {
     "miniRadius": 4,
     "normalRadius": 8,
+    "mediumRadius": 10,
     "regularRadius": 5,
     "fullRadius": 12,
     "largeRadius": 20,

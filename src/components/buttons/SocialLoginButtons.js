@@ -1,30 +1,25 @@
-import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import { Theme, Responsive } from '../../libs';
 import { AppIcons } from '../../constants/icons';
-import Fonts from '../../constants/fonts';
-import AppColors from '../../constants/colors';
 
 const SocialLoginButtons = () => {
     return (
         <View>
+            {/* Divider */}
             <View style={styles.divider}>
                 <View style={styles.line} />
                 <Text style={styles.dividerText}>or continue with</Text>
                 <View style={styles.line} />
             </View>
 
+            {/* Social Buttons */}
             <View style={styles.row}>
                 <TouchableOpacity style={styles.socialBtn}>
-                    <Image
-                        source={AppIcons.google}
-                        style={styles.socialIcon}
-                    />
+                    <Image source={AppIcons.google} style={styles.socialIcon} />
                 </TouchableOpacity>
+
                 <TouchableOpacity style={styles.socialBtn}>
-                    <Image
-                        source={AppIcons.apple}
-                        style={styles.socialIcon}
-                    />
+                    <Image source={AppIcons.apple} style={styles.socialIcon} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -37,35 +32,36 @@ const styles = StyleSheet.create({
     divider: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 20,
+        marginVertical: Responsive.getHeight('2.5%'),
     },
     dividerText: {
-        marginHorizontal: 10,
-        color: '#888888',
-        fontFamily:Fonts.poppinsRegular
+        marginHorizontal: Responsive.getWidth('2.5%'),
+        color: Theme.colors.textLight,
+        fontFamily: Theme.typography.body.fontFamily,
+        fontSize: Responsive.AppFonts.body,
     },
     line: {
         flex: 1,
         height: 1,
-        backgroundColor: AppColors.primaryClr,
+        backgroundColor: Theme.colors.primary,
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
-        gap: 20,
+        gap: Responsive.getWidth('5%'),
     },
     socialBtn: {
-        backgroundColor: AppColors.whiteClr,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: AppColors.borderClr,
-        padding: 12,
-        width: 110,
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.borders.normalRadius,
+        borderWidth: Theme.borders.width,
+        borderColor: Theme.colors.lightBorder,
+        paddingVertical: Responsive.getHeight('1%'),
+        paddingHorizontal: Responsive.getWidth('7%'),
         alignItems: 'center',
     },
     socialIcon: {
-        width: 28,
-        height: 28,
-        resizeMode:'contain'
+        width: Responsive.getWidth('6.5%'),
+        height: Responsive.getWidth('6.5%'),
+        resizeMode: 'contain',
     },
 });

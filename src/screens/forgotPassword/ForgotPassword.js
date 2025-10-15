@@ -5,26 +5,28 @@ import InstructionText from '../../components/text/InstructionText';
 import InputText from '../../components/inputs/InputText';
 import { AppIcons } from '../../constants/icons';
 import { forgotPasswordStyles } from './Styles';
-import AppColors from '../../constants/colors';
+import { Theme, Responsive } from '../../libs';
 import Routes from '../../navigation/routes';
-import Fonts from '../../constants/fonts';
 import { CustomBackButton } from '../../components/buttons/BackButton';
+import Context from '../../context';
+import RootView from '../../components/RootView';
+import { PrimaryButton } from '../../components/buttons/PrimaryButton';
 
 const ForgotPassword = ({ navigation }) => {
+  const { languageString } = React.useContext(Context);
+
   const [email, setEmail] = useState('');
   const [invalid, setInvalid] = useState(false);
 
-  const handlePress = () => {
-          console.log("here is forgot pasword code screen")
 
+  const handlePress = () => {
     // Just for UI — no actual functionality
     if (!email) {
       setInvalid(true);
     }
-     else {
+    else {
       setInvalid(false);
       // you can later add your API call or alert here
-      console.log("here is forgot pasword code screen")
       navigation.navigate(Routes.forgotPasswordCode)
     }
   };
@@ -32,57 +34,60 @@ const ForgotPassword = ({ navigation }) => {
   const isFilled = !!email;
 
   return (
-    <View style={forgotPasswordStyles.container}>
+    <RootView>
+      <View style={forgotPasswordStyles.container}>
+        {/* Screen Title */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: Responsive.getHeight('2%') }}>
+          <CustomBackButton />
+          <Heading
+            title={languageString?.auth?.forgotPasswordTitle}
+            customStyles={{
+              fontFamily: Theme.typography.subheading.fontFamily,
+              fontSize: Responsive.AppFonts.h3,
+              marginLeft: Responsive.getWidth('3%'),
+              marginBottom: 0,
+            }}
+          />
+        </View>
 
-      {/* Screen Title */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
-        <CustomBackButton />
-        <Heading title="Forgot Password" customStyles={{
-          marginLeft: 15,
-          fontFamily: Fonts.poppinsSemiBold,
-          fontSize: 20,
-          marginBottom: 0,
-        }} />
+
+        {/* Description */}
+        <InstructionText
+          text={languageString?.auth?.otpSent}
+          customStyles={{
+            fontFamily: Theme.typography.medium.fontFamily,
+            color: Theme.colors.text,
+            marginBottom: Responsive.getHeight('2%'),
+            fontSize: Responsive.AppFonts.t1,
+          }}
+        />
+
+        {/* Email Input */}
+        <InputText
+          heading={languageString?.labels?.email}
+          placeholder={languageString?.auth?.emailPlaceholder}
+          value={email}
+          onChangeText={setEmail}
+          leftIcon={AppIcons.email}
+          keyboardType="email-address"
+          isInvalid={invalid}
+        />
+
+        <View style={{ flex: 1, marginVertical: 20, justifyContent: 'flex-end' }}>
+          {/* Submit Button */}
+          <PrimaryButton
+            text={languageString?.auth?.sendOtp}
+            btnFun={handlePress}
+            isDisabled={!isFilled}
+            customStyles={[
+              forgotPasswordStyles.loginButton,
+              { backgroundColor: isFilled ? Theme.colors.primary : Theme.colors.primaryBtnDisableClr },
+            ]}
+            textStyles={forgotPasswordStyles.loginText}
+          />
+        </View>
       </View>
-
-
-      {/* Description */}
-      <InstructionText
-        text="We’ll send a one-time password to your email or phone for verification."
-        customStyles={{
-          fontFamily: Fonts.poppinsMedium,
-          color: AppColors.blackClr,
-          marginBottom: 20,
-          fontSize: 14,
-
-        }}
-      />
-
-      {/* Email Input */}
-      <InputText
-        heading={'Email'}
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={setEmail}
-        icon={AppIcons.email}
-        keyboardType="email-address"
-        isInvalid={invalid}
-      />
-
-      <View style={{ flex: 1, marginVertical: 20 }}>
-        {/* Submit Button */}
-        <TouchableOpacity
-          style={[
-            forgotPasswordStyles.loginButton,
-            { backgroundColor: isFilled ? AppColors.primaryClr : AppColors.primaryBtnDisableClr },
-          ]}
-          onPress={handlePress}
-          disabled={!isFilled}
-        >
-          <Text style={forgotPasswordStyles.loginText}>Send OTP</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </RootView>
   );
 };
 

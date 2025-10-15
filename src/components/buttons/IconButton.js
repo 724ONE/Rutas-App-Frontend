@@ -1,19 +1,20 @@
-import React from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
-import AppColors from '../../constants/colors';
+import { Responsive, Theme } from '../../libs';
 
 const IconButton = ({
   icon,
-  size = 45,
-  iconSize = 22,
-  backgroundColor = AppColors.whiteClr,
-  iconColor = AppColors.primaryClr,
-  borderRadius = 12,
+  size = Responsive.getWidth('12%'), // Dynamically ~45px
+  iconSize = Responsive.getWidth('5.5%'), // Dynamically ~22px
+  backgroundColor = Theme.colors.white,
+  iconColor = Theme.colors.primary,
+  borderRadius = Responsive.getWidth('3%'), // Dynamically ~12px
   onPress,
   style,
 }) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
       style={[
         styles.button,
         {
@@ -24,8 +25,6 @@ const IconButton = ({
         },
         style,
       ]}
-      activeOpacity={0.7}
-      onPress={onPress}
     >
       <Image
         source={icon}

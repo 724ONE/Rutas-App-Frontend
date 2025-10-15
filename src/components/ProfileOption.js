@@ -5,18 +5,18 @@ import { AppIcons } from '../constants/icons';
 
 const ProfileOption = ({ icon, title, value, color, onPress }) => {
     return (
-        <TouchableOpacity style={styles.row} onPress={onPress}>
+        <TouchableOpacity style={[styles.row,{borderBottomWidth: title !== 'Logout' ? Theme.borders.width : 0}]} onPress={onPress}>
             <View style={styles.left}>
                 <Image source={icon} style={styles.icon} resizeMode="contain" />
                 <Text style={[styles.title, color ? { color } : null]}>{title}</Text>
             </View>
             <View style={styles.right}>
                 {value && <Text style={styles.value}>{value}</Text>}
-                <Image
+                {title != 'Logout' && <Image
                     source={AppIcons.next}
                     style={styles.arrow}
                     resizeMode="contain"
-                />
+                />}
             </View>
         </TouchableOpacity>
     );

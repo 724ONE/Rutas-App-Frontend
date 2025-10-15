@@ -12,6 +12,7 @@ import SavedLocation from '../screens/savedLocation/SavedLocation'
 import EditProfile from '../screens/editProfile/EditProfile'
 import MapViewScreen from '../screens/mapView/MapView'
 import AddLocation from '../screens/addLocation/AddLocation'
+import ResetPassword from '../screens/resetPassword/ResetPassword'
 
 
 
@@ -36,7 +37,8 @@ function AuthStack() {
     SavedLocation,
     EditProfile,
     MapViewScreen,
-    AddLocation
+    AddLocation,
+    ResetPassword,
   }
 
   return (
@@ -44,9 +46,9 @@ function AuthStack() {
       initialRouteName={Routes.splash}
       screenOptions={{
         headerShown: false,
-        statusBarAnimation: 'fade',
-        animation: 'slide_from_bottom',
-        orientation: 'default',
+        // statusBarAnimation: 'fade',
+        // animation: 'slide_from_bottom',
+        // orientation: 'default',
         freezeOnBlur: true,
       }}
     >

@@ -1,26 +1,18 @@
 import React, { useState, useRef, useContext } from 'react';
-import { PrimaryButton } from '../../components/buttons/PrimaryButton'
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+import { Theme, Responsive } from '../../libs';
+import { PrimaryButton } from '../../components/buttons/PrimaryButton';
 import { AppImages } from '../../constants/images';
 import Routes from '../../navigation/routes';
 import Context from '../../context';
-import RootView from '../../components/RootView'
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
-const { width, height } = Dimensions.get('window')
+import RootView from '../../components/RootView';
+
+const { width } = Dimensions.get('window');
 
 const OnBordingScreen = ({ navigation }) => {
   const { languageString } = useContext(Context);
-
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef(null)
+  const flatListRef = useRef(null);
 
   const introData = [
     {
@@ -55,9 +47,7 @@ const OnBordingScreen = ({ navigation }) => {
   };
 
   const handleSkip = () => {
-    // navigation.replace(Routes.login);
-        navigation.replace(Routes.customBottomNav);
-
+    navigation.replace(Routes.login);
   };
 
   const onMomentumEnd = (e) => {
@@ -66,39 +56,32 @@ const OnBordingScreen = ({ navigation }) => {
     if (index !== currentIndex) setCurrentIndex(index);
   };
 
-  const renderItem = ({ item }) => {
-    return (
-      <View style={styles.screen}>
-        {/* Illustration */}
-        <Image source={item.image} style={styles.image} resizeMode="contain" />
+  const renderItem = ({ item }) => (
+    <View style={styles.screen}>
+      {/* Illustration */}
+      <Image source={item.image} style={styles.image} resizeMode="contain" />
 
-        {/* Title & Description */}
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-      </View>
-    );
-  };
+      {/* Title */}
+      <Text style={styles.title}>{item.title}</Text>
+
+      {/* Description */}
+      <Text style={styles.description}>{item.description}</Text>
+    </View>
+  );
 
   return (
     <RootView>
-
       <View style={styles.container}>
-
         {/* Skip Button */}
-        <PrimaryButton text={languageString?.onboarding?.skip} btnFun={handleSkip} customStyles={{
-          width: 72,
-          height: 32.0,
-          borderRadius: 4,
-          margin: 15,
-          alignSelf: 'flex-end',
-        }}
-          textStyles={{
-            fontSize: 13,
-          }}
+        <PrimaryButton
+          text={languageString?.onboarding?.skip}
+          btnFun={handleSkip}
+          customStyles={styles.skipBtn}
+          textStyles={styles.skipText}
         />
 
-        {/* FlatList Screens */}
-        <View style={{flex:3}}>
+        {/* FlatList (Screens) */}
+        <View style={styles.sliderContainer}>
           <FlatList
             ref={flatListRef}
             data={introData}
@@ -124,16 +107,14 @@ const OnBordingScreen = ({ navigation }) => {
           ))}
         </View>
 
-        {/* Next Button */}
-        <PrimaryButton text={currentIndex === introData.length - 1 ? 'Get Started' : 'Next'} btnFun={handleNext} customStyles={{
-          width: '95%',
-          height: 50.0,
-          borderRadius: 10,
-          margin: 15,
-        }}
-          textStyles={{
-            // fontSize: 12,
-          }}/>
+        {/* Next / Get Started Button */}
+        <View style={styles.nextBtnWrapper}>
+          <PrimaryButton
+            text={currentIndex === introData.length - 1 ? 'Get Started' : 'Next'}
+            btnFun={handleNext}
+            customStyles={styles.nextBtn}
+          />
+        </View>
       </View>
     </RootView>
   );
@@ -144,50 +125,76 @@ export default OnBordingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.whiteClr,
+    backgroundColor: Theme.colors.screenBg,
+  },
+  skipBtn: {
+    width: Responsive.getWidth('20%'),
+    height: Responsive.getHeight('4%'),
+    borderRadius: Theme.borders.miniRadius,
+    margin: Responsive.sizeMatter.scale(12),
+    alignSelf: 'flex-end',
+    backgroundColor: Theme.colors.primary,
+  },
+  skipText: {
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.white,
+  },
+  sliderContainer: {
+    flex: 3,
   },
   screen: {
     width,
     alignItems: 'center',
-    // paddingHorizontal: 15,
   },
   image: {
-    width: width * 0.95,
-    height: height * 0.5,
-    marginBottom: 30,
+    width: Responsive.getWidth('95%'),
+    height: Responsive.getHeight('45%'),
+    marginBottom: Responsive.sizeMatter.verticalScale(20),
   },
   title: {
-    fontSize: 20,
-    fontFamily: Fonts.poppinsSemiBold,
+    fontSize: Responsive.AppFonts.h3,
+    fontFamily: Theme.typography.subheading.fontFamily,
     includeFontPadding: false,
     textAlign: 'center',
-    color: AppColors.primaryClr,
-    marginBottom: 15,
+    color: Theme.colors.primary,
+    marginBottom: Responsive.sizeMatter.verticalScale(12),
   },
   description: {
-    color: AppColors.secondryText,
+    color: Theme.colors.secondryText,
     textAlign: 'center',
-    fontFamily: Fonts.poppinsMedium,
+    fontFamily: Theme.typography.medium.fontFamily,
     includeFontPadding: false,
-    paddingHorizontal: 30,
+    paddingHorizontal: Responsive.sizeMatter.scale(30),
+    fontSize: Responsive.AppFonts.t1,
   },
   pagination: {
     flex: 0.5,
     flexDirection: 'row',
     alignSelf: 'center',
-    // marginTop: 20,
+    marginTop: Responsive.sizeMatter.verticalScale(10),
   },
   dot: {
-    width: 25,
-    height: 5,
-    borderRadius: 3,
-    marginHorizontal: 4,
+    width: Responsive.sizeMatter.scale(25),
+    height: Responsive.sizeMatter.verticalScale(5),
+    borderRadius: Theme.borders.regularRadius,
+    marginHorizontal: Responsive.sizeMatter.scale(4),
   },
   activeDot: {
-    backgroundColor: AppColors.primaryClr,
+    backgroundColor: Theme.colors.primary,
   },
   inactiveDot: {
-    backgroundColor: '#61616180',
+    backgroundColor: Theme.colors.inactiveIconClr,
   },
-
+  nextBtn: {
+    width: Responsive.getWidth('92%'),
+    height: Responsive.getHeight('6%'),
+    borderRadius: Theme.borders.normalRadius,
+    alignSelf: 'center',
+    marginBottom: Responsive.sizeMatter.verticalScale(20),
+  },
+  nextBtnWrapper: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: Responsive.sizeMatter.verticalScale(20),
+  },
 });

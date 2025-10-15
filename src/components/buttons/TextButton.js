@@ -1,12 +1,26 @@
-import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import AppColors from '../../constants/colors';
-import Fonts from '../../constants/fonts';
+import { Theme, Responsive } from '../../libs';
 
-const TextButton = ({ onPress, isInvalid,textStyles ,text,customStyles}) => {
+const TextButton = ({
+  onPress,
+  isInvalid,
+  text,
+  textStyles,
+  customStyles,
+}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.container,customStyles]}>
-      <Text style={[styles.text, isInvalid && styles.errorText, textStyles]}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={[styles.container, customStyles]}
+    >
+      <Text
+        style={[
+          styles.text,
+          isInvalid && styles.errorText,
+          textStyles,
+        ]}
+      >
         {text}
       </Text>
     </TouchableOpacity>
@@ -18,14 +32,14 @@ export default TextButton;
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-end',
-    marginBottom: 25,
+    marginBottom: Responsive.getHeight('3%'),
   },
   text: {
-    fontSize: 14,
-    color: AppColors.primaryClr,
-    fontFamily: Fonts.poppinsRegular,
+    fontSize: Responsive.AppFonts.body,
+    color: Theme.colors.primary,
+    fontFamily: Theme.typography.body.fontFamily,
   },
   errorText: {
-    color: '#e53935',
+    color: Theme.colors.error,
   },
 });

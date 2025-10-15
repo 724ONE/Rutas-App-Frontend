@@ -1,36 +1,33 @@
 import { StyleSheet } from "react-native";
-import AppColors from "../../constants/colors";
-import Fonts from "../../constants/fonts";
+import { Theme, Responsive } from '../../libs';
 
 export const forgotPasswordStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.screenBg,
-    padding: 20,
+    backgroundColor: Theme.colors.screenBg,
+    paddingHorizontal: Responsive.getWidth('5%'),
+    paddingTop: Responsive.getHeight('2%'),
   },
   loginButton: {
-    height: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
+    width: Responsive.getWidth('90%'),
+    marginBottom: Responsive.getHeight('2%'),
   },
   loginText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    color: Theme.colors.white,
+    fontSize: Responsive.AppFonts.t1,
+    fontFamily: Theme.typography.subheading.fontFamily,
   },
   signupText: {
     textAlign: 'center',
-    marginTop: 30,
-    fontSize: 14,
-    color: '#888888',
-    fontFamily:Fonts.poppinsRegular,
-    includeFontPadding:false
+    marginTop: Responsive.getHeight('3%'),
+    fontSize: Responsive.AppFonts.t2,
+    color: Theme.colors.textLight,
+    fontFamily: Theme.typography.body.fontFamily,
+    includeFontPadding: false,
   },
   signupLink: {
-    color: AppColors.primaryClr,
-    fontFamily:Fonts.poppinsSemiBold,
-    includeFontPadding:false
+    color: Theme.colors.primary,
+    fontFamily: Theme.typography.subheading.fontFamily,
+    includeFontPadding: false,
   },
 });

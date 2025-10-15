@@ -5,17 +5,18 @@ import { AppIcons } from '../../constants/icons';
 import InputText from '../../components/inputs/InputText';
 import RootView from '../../components/RootView';
 import AppHeader from '../../components/headers/AppHeader';
+import Context from '../../context';
 
 const EditProfile = ({ navigation }) => {
+    const { languageString } = React.useContext(Context);
     const [name, setName] = useState('Lorem Steve');
     const [email, setEmail] = useState('xyz@gmail.com');
     const [password, setPassword] = useState('**********');
-
     return (
         <RootView>
             {/* App Header */}
             <AppHeader
-                title="Edit Profile"
+                title={languageString?.labels?.editProfile}
                 backgroundColor={Theme.colors.white}
                 onBackPress={() => navigation.goBack()}
             />
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     },
     profileWrapper: {
         alignItems: 'center',
-        marginVertical: Responsive.getHeight('3%'),
+        marginBottom: Responsive.getHeight('3%'),
     },
     profileImage: {
         width: Responsive.getWidth('28%'),
@@ -92,21 +93,20 @@ const styles = StyleSheet.create({
     editIconContainer: {
         position: 'absolute',
         bottom: Responsive.getHeight('1%'),
-        right: Responsive.getWidth('36%'),
-        backgroundColor: Theme.colors.white,
-        borderRadius: Theme.borders.fullRadius,
-        borderWidth: Theme.borders.width,
+        right: Responsive.getWidth('30%'),
+        // backgroundColor: Theme.colors.white,
+        // borderRadius: Theme.borders.fullRadius,
+        // borderWidth: Theme.borders.width,
         borderColor: Theme.colors.borderClr,
-        padding: Responsive.getWidth('2%'),
         shadowColor: Theme.colors.shodowClr,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: Theme.elevation.small,
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowOpacity: 0.2,
+        // shadowRadius: 2,
+        // elevation: Theme.elevation.small,
     },
     editIcon: {
-        width: Responsive.getWidth('4%'),
-        height: Responsive.getWidth('4%'),
+        width: Responsive.getWidth('5%'),
+        height: Responsive.getWidth('5%'),
         tintColor: Theme.colors.primary,
         resizeMode: 'contain',
     },

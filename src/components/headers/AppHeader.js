@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Theme, Responsive } from '../../libs';
 import { AppIcons } from '../../constants/icons';
 import IconButton from '../buttons/IconButton';
+import { useNavigation } from '@react-navigation/native';
 
 const AppHeader = ({
   title = '',
@@ -13,13 +14,13 @@ const AppHeader = ({
   showBack = true,
   containerStyle,
 }) => {
-  // Determine if background is white
-  const isWhiteBg = backgroundColor === Theme.colors.white;
 
+  const navigation = useNavigation();
+  onBackPress = onBackPress || (() => { navigation.goBack() });
+  const isWhiteBg = backgroundColor === Theme.colors.white;
   const iconBgColor = isWhiteBg ? Theme.colors.primary : Theme.colors.white;
   const iconTintColor = isWhiteBg ? Theme.colors.white : Theme.colors.primary;
   const titleColor = isWhiteBg ? Theme.colors.text : Theme.colors.white;
-
   return (
     <View
       style={[
@@ -54,7 +55,7 @@ const AppHeader = ({
           {
             color: titleColor,
             fontFamily: Theme.typography.subheading.fontFamily,
-            fontWeight: Theme.typography.subheading.fontWeight,
+            fontWeight: Theme.typography.medium.fontWeight,
           },
         ]}
         numberOfLines={1}
@@ -87,8 +88,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    height: Responsive.getHeight('8%'),
     paddingHorizontal: Responsive.getWidth('6%'),
-    paddingTop: Responsive.getHeight('6%'),
+    // paddingTop: Responsive.getHeight('6%'),
     paddingBottom: Responsive.getHeight('2%'),
   },
   title: {

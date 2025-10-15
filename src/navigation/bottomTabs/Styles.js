@@ -2,7 +2,7 @@ import {
     StyleSheet,
 } from "react-native";
 
-import Colors from "../../constants/colors";
+import { Theme } from '../../libs';
 
 export const stylesCustomBottomTabs = StyleSheet.create({
 })
