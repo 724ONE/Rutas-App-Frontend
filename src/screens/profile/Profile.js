@@ -14,7 +14,7 @@ const Profile = ({ navigation }) => {
   const { languageString } = React.useContext(Context);
   const profileOptions = [
     { id: 1, icon: AppIcons.user, title: 'Edit Profile', screen: Routes.editProfile },
-    { id: 2, icon: AppIcons.language, title: 'Language', value: 'English (US)' },
+    { id: 2, icon: AppIcons.language, title: 'Language', value: 'English (US)', },
     { id: 3, icon: AppIcons.lock, title: 'Privacy Policy' },
     { id: 4, icon: AppIcons.help, title: 'Help Center' },
     { id: 5, icon: AppIcons.invite, title: 'Invite Friends' },
@@ -47,7 +47,7 @@ const Profile = ({ navigation }) => {
                 value={item.value}
                 color={item.color}
                 hideBorder={index === profileOptions.length - 1}
-                onPress={() => navigation.navigate(item?.screen)}
+                onPress={() => !!item.screen && navigation.navigate(item?.screen)}
               />
             ))}
           </View>

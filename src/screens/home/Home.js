@@ -122,8 +122,10 @@ const HomeScreen = ({ navigation }) => {
                     />
                 </View> */}
 
-                <MyMapView navigation={navigation} />
+<View style={{marginTop:Responsive.getHeight('1%')}}>
+                    <MyMapView navigation={navigation} />
 
+</View>
                 {/* Dashboard */}
                 <Heading
                     title={languageString?.home?.dashboard}
@@ -165,15 +167,17 @@ const HomeScreen = ({ navigation }) => {
                             onPressIcon={() => console.log(`Center map on: ${item.name}`)}
                         />
                     ))}
-                </View>
-
-            </ScrollView>
-
-            {/* Floating Action Button */}
+                     {/* Floating Action Button */}
             <FloatingActionButton
                 icon={AppIcons.circleAdd}
                 onPress={() => navigation.navigate(Routes.addLocation)}
             />
+                </View>
+
+ 
+            </ScrollView>
+
+          
         </RootView>
     );
 };

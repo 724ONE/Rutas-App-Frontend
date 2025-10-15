@@ -73,12 +73,14 @@ const OnBordingScreen = ({ navigation }) => {
     <RootView>
       <View style={styles.container}>
         {/* Skip Button */}
-        <PrimaryButton
-          text={languageString?.onboarding?.skip}
-          btnFun={handleSkip}
-          customStyles={styles.skipBtn}
-          textStyles={styles.skipText}
-        />
+        {currentIndex !== 2 &&
+          <PrimaryButton
+            text={languageString?.onboarding?.skip}
+            btnFun={handleSkip}
+            customStyles={styles.skipBtn}
+            textStyles={styles.skipText}
+          />
+        }
 
         {/* FlatList (Screens) */}
         <View style={styles.sliderContainer}>

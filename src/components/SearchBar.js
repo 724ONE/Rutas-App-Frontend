@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Theme, Responsive } from '../libs';
 import { AppIcons } from '../constants/icons';
 
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     tintColor: Theme.colors.primary,
   },
   text: {
+    includeFontPadding: false,
     flex: 1,
     fontSize: Responsive.AppFonts.t1,
     fontFamily: Theme.typography.body.fontFamily,

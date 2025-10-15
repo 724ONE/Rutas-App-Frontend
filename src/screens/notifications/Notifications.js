@@ -60,8 +60,15 @@ const Notifications = ({ navigation }) => {
           </TouchableOpacity>
         </View> */}
 
-        <Heading title={languageString?.notifications?.new}
-          customStyles={styles.sectionTitle} />
+        <View style={styles.sectionHeader}>
+          <Heading title={languageString?.notifications?.new}
+            customStyles={styles.sectionTitle} />
+          <TouchableOpacity>
+            <Text style={styles.markAll}>{languageString?.notifications?.markAllAsRead}</Text>
+          </TouchableOpacity>
+        </View>
+
+
 
         {newNotifications.map((item) => renderNotification({ item }))}
 
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
     marginBottom: Responsive.getHeight('0%')
   },
   markAll: {
-    fontFamily: Theme.typography.body.fontFamily,
+    fontFamily: Theme.typography.medium.fontFamily,
     fontSize: Responsive.AppFonts.t2,
     color: Theme.colors.text,
   },

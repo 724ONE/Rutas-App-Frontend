@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: Responsive.AppFonts.t1,
     fontFamily: Theme.typography.body.fontFamily,
+    includeFontPadding:false,
     color: Theme.colors.text,
   },
   recentContainer: {

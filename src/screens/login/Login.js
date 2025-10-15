@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
+import { useFormik } from 'formik'; // Use Formik
 import Heading from '../../components/text/Heading';
 import InstructionText from '../../components/text/InstructionText';
 import InputText from '../../components/inputs/InputText';
 import SocialLoginButtons from '../../components/buttons/SocialLoginButtons';
-import TextButton from '../../components/buttons/TextButton';
 import { AppIcons } from '../../constants/icons';
 import { Theme, Responsive } from '../../libs';
 import Context from '../../context';
@@ -12,24 +12,29 @@ import Routes from '../../navigation/routes';
 import { loginStyles } from './Styles';
 import RootView from '../../components/RootView';
 import { PrimaryButton } from '../../components/buttons/PrimaryButton';
-
+import loginValidationSchema from '../../utils/validationSchemas'; // Use validation schema
+import ErrorMessage from '../../components//text/ErrorMessage';  // Import ErrorMessage component
+import TextButton from '../../components/buttons/TextButton';
 const Login = ({ navigation }) => {
   const { languageString } = React.useContext(Context);
 
-  const [email, setEmail] = useState(__DEV__ ? 'test@gmail.com':"");
-  const [password, setPassword] = useState(__DEV__ ? '123456':"");
-  const [invalid, setInvalid] = useState(false);
-
-  const handleLogin = () => {
-    if (email !== 'test@gmail.com' || password !== '123456') {
-      setInvalid(true);
-    } else {
-      setInvalid(false);
+  // Formik hook
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginValidationSchema, // Apply the validation schema
+    onSubmit: () => {
       navigation.replace(Routes.customBottomNav);
-    }
-  }
+    },
+  });
 
-  const isFilled = !!(email && password);
+  // Check if all fields are filled (to enable button)
+  const isFilled = formik.values.email && formik.values.password;
+
+  // Enable the button only if form is filled and valid
+  const isButtonEnabled = isFilled && formik.isValid && !formik.isSubmitting;
 
   return (
     <RootView>
@@ -60,24 +65,30 @@ const Login = ({ navigation }) => {
         <InputText
           heading="Email"
           placeholder={languageString?.auth?.emailPlaceholder}
-          value={email}
-          onChangeText={setEmail}
+          value={formik.values.email}
+          onChangeText={formik.handleChange('email')}
+          onBlur={formik.handleBlur('email')}
           leftIcon={AppIcons.email}
           keyboardType="email-address"
-          isInvalid={invalid}
+          isInvalid={formik.touched.email && formik.errors.email}
         />
+        {/* Error Message for Email */}
+        <ErrorMessage errorMessage={formik.touched.email && formik.errors.email} />
 
         {/* Password Input */}
         <InputText
           heading="Password"
           placeholder={languageString?.auth?.passwordPlaceholder}
-          value={password}
-          onChangeText={setPassword}
+          value={formik.values.password}
+          onChangeText={formik.handleChange('password')}
+          onBlur={formik.handleBlur('password')}
           leftIcon={AppIcons.password}
           secureTextEntry
           showToggle
-          isInvalid={invalid}
+          isInvalid={formik.touched.password && formik.errors.password}
         />
+        {/* Error Message for Password */}
+        <ErrorMessage errorMessage={formik.touched.password && formik.errors.password} />
 
         {/* Forgot Password */}
         <TextButton
@@ -94,16 +105,16 @@ const Login = ({ navigation }) => {
         {/* Login Button */}
         <PrimaryButton
           text={languageString?.auth?.loginButton}
-          btnFun={handleLogin}
-          isDisabled={!isFilled}
+          btnFun={formik.handleSubmit}
+          isDisabled={!isButtonEnabled} // Disable the button if fields are empty or form is invalid
           customStyles={[
             loginStyles.loginButton,
-            { backgroundColor: isFilled ? Theme.colors.primary : Theme.colors.primaryBtnDisableClr },
+            { backgroundColor: isButtonEnabled ? Theme.colors.primary : Theme.colors.primaryBtnDisableClr },
           ]}
           textStyles={loginStyles.loginText}
         />
 
-        {/* Social Login */}
+        {/* Social Login Buttons */}
         <SocialLoginButtons />
 
         {/* Signup Text */}
@@ -112,7 +123,8 @@ const Login = ({ navigation }) => {
             Don’t have an account?{' '}
             <Text
               style={loginStyles.signupLink}
-              onPress={() => navigation.navigate(Routes.register)} >
+              onPress={() => navigation.navigate(Routes.register)}
+            >
               Signup
             </Text>
           </Text>

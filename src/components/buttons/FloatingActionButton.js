@@ -43,8 +43,8 @@ export default FloatingActionButton;
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    right: Responsive.getWidth('6%'),
-    bottom: Responsive.getHeight('4%'),
+    right: Responsive.getWidth('4%'),
+    bottom: Responsive.getHeight('3%'),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: Theme.colors.shodowClr,

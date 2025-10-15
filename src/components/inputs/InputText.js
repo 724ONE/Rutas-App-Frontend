@@ -84,7 +84,10 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: '100%',
+    textAlignVertical:'center',
+    marginTop:Responsive.getHeight('0.5%'),
     fontSize: Responsive.sizeMatter.moderateScale(15),
+    includeFontPadding:false,
     color: Theme.colors.text,
     fontFamily: Theme.typography.body.fontFamily,
   },

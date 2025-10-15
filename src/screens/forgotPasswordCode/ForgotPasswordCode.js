@@ -144,8 +144,9 @@ export default ForgotPasswordCode;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.white,
+    backgroundColor: Theme.colors.screenBg,
     paddingHorizontal: Responsive.getWidth('5%'),
+    paddingTop: Responsive.getHeight('4%'),
   },
   backBtn: {
     position: 'absolute',

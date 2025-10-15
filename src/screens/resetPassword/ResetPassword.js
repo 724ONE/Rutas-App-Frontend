@@ -17,11 +17,11 @@ import InputText from '../../components/inputs/InputText';
 import InstructionText from '../../components/text/InstructionText';
 import { CustomBackButton } from '../../components/buttons/BackButton';
 import Heading from '../../components/text/Heading';
+import { BlurView } from '@react-native-community/blur'; 
 
 const ResetPassword = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    // visibility toggles handled inside InputText component; remove local unused state
     const [showModal, setShowModal] = useState(false);
 
     const { languageString } = React.useContext(Context);
@@ -48,7 +48,6 @@ const ResetPassword = ({ navigation }) => {
 
     return (
         <RootView backgroundColor={Theme.colors.screenBg} statusColor={Theme.colors.primary}>
-
             {/* Content */}
             <View style={styles.content}>
                 {/* Header */}
@@ -76,8 +75,6 @@ const ResetPassword = ({ navigation }) => {
                     }}
                 />
 
-
-
                 {/* New Password */}
                 <InputText
                     heading={languageString?.auth?.newPasswordLabel}
@@ -100,14 +97,25 @@ const ResetPassword = ({ navigation }) => {
                     isInvalid={false}
                 />
 
-                {/* Save Button */}
+               <View style={{flex:1,justifyContent:'flex-end',marginBottom:Responsive.getHeight("3%")}}>
+                 {/* Save Button */}
                 <PrimaryButton
                     isDisabled={!(newPassword && confirmPassword)}
                     text={languageString?.common?.save}
                     btnFun={handleSave}
                     customStyles={{ marginTop: Responsive.getHeight('4%'), width: '100%' }}
                 />
+               </View>
             </View>
+
+            {/* Blur effect when modal is visible */}
+            {showModal && (
+                <BlurView
+                    style={styles.blurBackground}
+                    blurType="light" // Change this to "dark" for a dark blur effect
+                    blurAmount={5}  // Adjust the blur strength
+                />
+            )}
 
             {/* ✅ Success Modal */}
             <Modal visible={showModal} transparent animationType="fade">
@@ -140,48 +148,20 @@ const ResetPassword = ({ navigation }) => {
 export default ResetPassword;
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: Theme.colors.primary,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: Responsive.getWidth('5%'),
-        paddingVertical: Responsive.getHeight('2%'),
-        borderBottomLeftRadius: Theme.borders.largeRadius,
-        borderBottomRightRadius: Theme.borders.largeRadius,
-    },
-    headerTitle: {
-        flex: 1,
-        textAlign: 'center',
-        fontFamily: Theme.typography.subheading.fontFamily,
-        fontSize: Responsive.AppFonts.h5,
-        color: Theme.colors.white,
-        marginRight: Responsive.getWidth('10%'),
-    },
     content: {
         flex: 1,
         paddingHorizontal: Responsive.getWidth('5%'),
         paddingTop: Responsive.getHeight('3%'),
     },
-    infoText: {
-        fontFamily: Theme.typography.body.fontFamily,
-        fontSize: Responsive.AppFonts.t2,
-        color: Theme.colors.secondryText,
-        marginBottom: Responsive.getHeight('2%'),
-    },
-    label: {
-        fontFamily: Theme.typography.subheading.fontFamily,
-        fontSize: Responsive.AppFonts.t2,
-        color: Theme.colors.text,
-        marginBottom: Responsive.getHeight('0.5%'),
-    },
-    // inputContainer and input styles removed in favor of reusable InputText component
-
-    // Modal Styles
     modalBackground: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.4)',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    blurBackground: {
+        ...StyleSheet.absoluteFillObject, // Makes the blur cover the entire screen
+        zIndex: 0, // Ensure it's behind the modal
     },
     modalContainer: {
         backgroundColor: Theme.colors.white,
@@ -189,6 +169,7 @@ const styles = StyleSheet.create({
         borderRadius: Theme.borders.mediumRadius,
         alignItems: 'center',
         padding: Responsive.getWidth('6%'),
+        zIndex: 1, // Ensure the modal is on top of the blurred background
     },
     iconCircle: {
         backgroundColor: Theme.colors.primary,

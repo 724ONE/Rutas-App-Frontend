@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import { View, TouchableOpacity, Image, StyleSheet, Text, Platform } from 'react-native';
 import { Theme, Responsive } from '../../libs';
 import { AppIcons } from '../../constants/icons';
 
@@ -14,13 +14,14 @@ const SocialLoginButtons = () => {
 
             {/* Social Buttons */}
             <View style={styles.row}>
-                <TouchableOpacity style={styles.socialBtn}>
+                {Platform.OS === 'android' && <TouchableOpacity style={styles.socialBtn}>
                     <Image source={AppIcons.google} style={styles.socialIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
 
-                <TouchableOpacity style={styles.socialBtn}>
-                    <Image source={AppIcons.apple} style={styles.socialIcon} />
-                </TouchableOpacity>
+                {Platform.OS === 'ios' &&
+                    <TouchableOpacity style={styles.socialBtn}>
+                        <Image source={AppIcons.apple} style={styles.socialIcon} />
+                    </TouchableOpacity>}
             </View>
         </View>
     );
