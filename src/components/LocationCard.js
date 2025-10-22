@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { Theme, Responsive } from '../libs'
 
 import FloatingIconButton from './buttons/FloatingIconButton'
 
-const LocationCard = ({ item, onPressIcon }) => {
+const LocationCard = ({ item, onPressIcon, isSelected, onSelectChange }) => {
     return (
         <View style={styles.card}>
             <View style={styles.row}>
@@ -32,6 +32,19 @@ const LocationCard = ({ item, onPressIcon }) => {
                         Note: {item.note}
                     </Text>
                 </View>
+
+                <TouchableOpacity
+                    style={styles.radioButton}
+                    onPress={() => onSelectChange && onSelectChange(!isSelected)}
+                    activeOpacity={0.7}
+                >
+                    <View style={[
+                        styles.radioOuter,
+                        isSelected && styles.radioSelected
+                    ]}>
+                        {isSelected && <View style={styles.radioInner} />}
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -71,5 +84,29 @@ const styles = StyleSheet.create({
         fontFamily: Theme.typography.body.fontFamily,
         fontSize: Responsive.AppFonts.t1,
         marginTop: Responsive.getHeight('0.5%'),
+    },
+    radioButton: {
+        padding: Responsive.getWidth('2%'),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    radioOuter: {
+        width: Responsive.getWidth('5%'),
+        height: Responsive.getWidth('5%'),
+        borderRadius: Responsive.getWidth('1%'),
+        borderWidth: 2,
+        borderColor: Theme.colors.borderClr,
+        backgroundColor: Theme.colors.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    radioSelected: {
+        borderColor: Theme.colors.primary,
+    },
+    radioInner: {
+        width: Responsive.getWidth('2.5%'),
+        height: Responsive.getWidth('2.5%'),
+        borderRadius: Responsive.getWidth('1.25%'),
+        backgroundColor: Theme.colors.primary,
     },
 });

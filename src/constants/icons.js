@@ -12,10 +12,22 @@ export const AppIcons = {
   home: require('../assets/icons/home.png'),
   location: require('../assets/icons/location.png'),
   mapLocation: require('../assets/icons/map_location.png'),
+  sendRoute: require('../assets/icons/send_route.png'),
+  direction: require('../assets/icons/direction.png'),
+  info: require('../assets/icons/info.png'),
+  reuse: require('../assets/icons/reuse.png'),
+  car: require('../assets/icons/car.png'),
+  clock: require('../assets/icons/clock.png'),
+    userCicle: require('../assets/icons/user_cicle.png'),
+  circleClock: require('../assets/icons/circle_clock.png'),
+
+
+  simpleLocation: require('../assets/icons/simple_location.png'),
   notifications: require('../assets/icons/notifications.png'),
   search: require('../assets/icons/search.png'),
   bell: require('../assets/icons/bell.png'),
   edit: require('../assets/icons/edit.png'),
+
   language: require('../assets/icons/language.png'),
   lock: require('../assets/icons/lock.png'),
   help: require('../assets/icons/help.png'),

@@ -2,14 +2,12 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../screens/home/Home';
-import Location from '../../screens/location/Location';
-import Notifications from '../../screens/notifications/Notifications';
+import CreateRoute from '../../screens/createRoute/CreateRoute';
 import Profile from '../../screens/profile/Profile';
 import { AppIcons } from '../../constants/icons';
 import { Responsive, Theme } from '../../libs';
 import Routes from '../routes';
 import History from '../../screens/history/History';
-import Context from '../../context';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,11 +36,11 @@ const CustomBottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name={Routes.location}
-        component={Location}
+        name={Routes.createRoute}
+        component={CreateRoute}
         options={{
           tabBarIcon: ({ focused }) =>
-            bottomTabItem(focused, AppIcons.location, 'Location', 22),
+            bottomTabItem(focused, AppIcons.location, 'Routes', 22),
         }}
       />
       <Tab.Screen

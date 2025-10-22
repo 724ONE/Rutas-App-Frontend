@@ -1,22 +1,57 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import { Responsive, Theme } from '../../libs';
 import { AppIcons } from '../../constants/icons';
 import InputText from '../../components/inputs/InputText';
 import RootView from '../../components/RootView';
 import AppHeader from '../../components/headers/AppHeader';
+import {
+    EditNameModal,
+    EditEmailModal,
+    EditPasswordModal,
+    EditPhoneModal,
+} from '../../components/modals/CustomModal';
 import Context from '../../context';
 
 const EditProfile = ({ navigation }) => {
-    const { languageString } = React.useContext(Context);
+    const context = React.useContext(Context);
+    const languageString = context?.languageString || {};
     const [name, setName] = useState('Lorem Steve');
     const [email, setEmail] = useState('xyz@gmail.com');
     const [password, setPassword] = useState('**********');
+    const [phone, setPhone] = useState('+1 234 567 8900');
+
+    // Modal states
+    const [nameModalVisible, setNameModalVisible] = useState(false);
+    const [emailModalVisible, setEmailModalVisible] = useState(false);
+    const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+    const [phoneModalVisible, setPhoneModalVisible] = useState(false);
+
+    // Handle updates
+    const handleNameUpdate = (newName) => {
+        setName(newName);
+        console.log('Name updated to:', newName);
+    };
+
+    const handleEmailUpdate = (newEmail) => {
+        setEmail(newEmail);
+        console.log('Email updated to:', newEmail);
+    };
+
+    const handlePasswordUpdate = (newPassword) => {
+        setPassword('**********'); // Keep it masked
+        console.log('Password updated');
+    };
+
+    const handlePhoneUpdate = (newPhone) => {
+        setPhone(newPhone);
+        console.log('Phone updated to:', newPhone);
+    };
     return (
         <RootView>
             {/* App Header */}
             <AppHeader
-                title={languageString?.labels?.editProfile}
+                title={languageString?.labels?.editProfile || 'Edit Profile'}
                 backgroundColor={Theme.colors.white}
                 onBackPress={() => navigation.goBack()}
             />
@@ -33,7 +68,10 @@ const EditProfile = ({ navigation }) => {
                         }}
                         style={styles.profileImage}
                     />
-                    <TouchableOpacity style={styles.editIconContainer}>
+                    <TouchableOpacity 
+                        style={styles.editIconContainer}
+                        onPress={() => console.log('Edit profile image pressed')}
+                    >
                         <Image
                             source={AppIcons.edit}
                             style={styles.editIcon}
@@ -45,25 +83,73 @@ const EditProfile = ({ navigation }) => {
                 <InputText
                     heading="Full Name"
                     value={name}
-                    onChangeText={setName}
+                    editable={false}
                     rightIcon={AppIcons.edit}
+                    onRightPress={() => setNameModalVisible(true)}
+                />
+
+                <InputText
+                    heading="Phone Number"
+                    value={phone}
+                    editable={false}
+                    rightIcon={AppIcons.edit}
+                    onRightPress={() => setPhoneModalVisible(true)}
                 />
 
                 <InputText
                     heading="Email"
                     value={email}
-                    onChangeText={setEmail}
+                    editable={false}
                     rightIcon={AppIcons.edit}
+                    onRightPress={() => setEmailModalVisible(true)}
                     keyboardType="email-address"
                 />
 
                 <InputText
                     heading="Password"
                     value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
+                    editable={false}
                     rightIcon={AppIcons.edit}
+                    onRightPress={() => setPasswordModalVisible(true)}
+                    secureTextEntry
                 />
+
+                {/* Edit Modals */}
+                {nameModalVisible && (
+                    <EditNameModal
+                        visible={nameModalVisible}
+                        onClose={() => setNameModalVisible(false)}
+                        oldName={name || ''}
+                        onUpdate={handleNameUpdate}
+                    />
+                )}
+
+                {emailModalVisible && (
+                    <EditEmailModal
+                        visible={emailModalVisible}
+                        onClose={() => setEmailModalVisible(false)}
+                        oldEmail={email || ''}
+                        onUpdate={handleEmailUpdate}
+                    />
+                )}
+
+                {passwordModalVisible && (
+                    <EditPasswordModal
+                        visible={passwordModalVisible}
+                        onClose={() => setPasswordModalVisible(false)}
+                        onUpdate={handlePasswordUpdate}
+                    />
+                )}
+
+                {/* Phone Number Modal */}
+                {phoneModalVisible && (
+                    <EditPhoneModal
+                        visible={phoneModalVisible}
+                        onClose={() => setPhoneModalVisible(false)}
+                        oldPhone={phone || ''}
+                        onUpdate={handlePhoneUpdate}
+                    />
+                )}
             </ScrollView>
         </RootView>
     );

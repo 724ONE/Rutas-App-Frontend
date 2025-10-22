@@ -16,14 +16,21 @@ const InputText = ({
   showToggle = false, // if true -> show password toggle icon
   heading,
   onRightPress,      // optional right icon press handler
+  editable = true,   // controls if input is editable
 }) => {
   const [hide, setHide] = useState(secureTextEntry);
+
+  const InputContainer = !editable && onRightPress ? TouchableOpacity : View;
 
   return (
     <View>
       {heading && <Text style={styles.heading}>{heading}</Text>}
 
-      <View style={[styles.container, isInvalid && styles.errorBorder, customStyles]}>
+      <InputContainer
+        style={[styles.container, isInvalid && styles.errorBorder, customStyles]}
+        onPress={!editable ? onRightPress : undefined}
+        activeOpacity={!editable ? 0.7 : 1}
+      >
         {/* 👈 Left Icon */}
         {leftIcon && <Image source={leftIcon} style={styles.leftIcon} />}
 
@@ -32,6 +39,7 @@ const InputText = ({
           style={[
             styles.input,
             { paddingLeft: leftIcon ? Responsive.getWidth('2%') : 0 },
+            !editable && styles.nonEditableInput,
           ]}
           placeholder={placeholder}
           value={value}
@@ -39,6 +47,8 @@ const InputText = ({
           secureTextEntry={hide}
           keyboardType={keyboardType}
           placeholderTextColor={Theme.colors.hintText}
+          editable={editable}
+          pointerEvents={editable ? 'auto' : 'none'}
         />
 
         {/* 👉 Right Icon (Custom or Password Toggle) */}
@@ -56,7 +66,7 @@ const InputText = ({
             </TouchableOpacity>
           )
         )}
-      </View>
+      </InputContainer>
     </View>
   );
 };
@@ -84,10 +94,10 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: '100%',
-    textAlignVertical:'center',
-    marginTop:Responsive.getHeight('0.5%'),
-    fontSize: Responsive.sizeMatter.moderateScale(15),
-    includeFontPadding:false,
+    textAlignVertical: 'center',
+    marginTop: Responsive.getHeight('0.5%'),
+    fontSize: Responsive.sizeMatter.moderateScale(14),
+    includeFontPadding: false,
     color: Theme.colors.text,
     fontFamily: Theme.typography.body.fontFamily,
   },
@@ -107,5 +117,9 @@ const styles = StyleSheet.create({
   },
   errorBorder: {
     borderColor: Theme.colors.error,
+  },
+  nonEditableInput: {
+    backgroundColor: 'transparent',
+    color: Theme.colors.text,
   },
 });

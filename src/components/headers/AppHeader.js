@@ -37,7 +37,7 @@ const AppHeader = ({
       {showBack ? (
         <IconButton
           icon={AppIcons.backArrow}
-          size={Responsive.getWidth('10%')}
+          size={Responsive.getWidth('9%')}
           iconSize={Responsive.getWidth('4%')}
           backgroundColor={iconBgColor}
           iconColor={iconTintColor}
@@ -67,7 +67,7 @@ const AppHeader = ({
       {rightIcon ? (
         <IconButton
           icon={rightIcon}
-          size={Responsive.getWidth('10%')}
+          size={Responsive.getWidth('9%')}
           iconSize={Responsive.getWidth('4%')}
           backgroundColor={iconBgColor}
           iconColor={iconTintColor}
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: Responsive.getHeight('8%'),
-    paddingHorizontal: Responsive.getWidth('6%'),
+    paddingHorizontal: Responsive.getWidth('2.5%'),
     // paddingTop: Responsive.getHeight('6%'),
     paddingBottom: Responsive.getHeight('2%'),
   },

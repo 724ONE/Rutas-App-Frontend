@@ -13,14 +13,15 @@ import EditProfile from '../screens/editProfile/EditProfile'
 import MapViewScreen from '../screens/mapView/MapView'
 import AddLocation from '../screens/addLocation/AddLocation'
 import ResetPassword from '../screens/resetPassword/ResetPassword'
-
-
-
-
-
+import GenerateRoute from '../screens/generateRoute/GenerateRoute'
+import Alerts from '../screens/alerts/Alerts'
+import Language from '../screens/language/Language'
+import PrivacyPolicy from '../screens/privacyPolicy/PrivacyPolicy'
+import HelpCenter from '../screens/helpCenter/HelpCenter'
 import Routes from './routes'
 import Home from '../screens/home/Home'
 import Notifications from '../screens/notifications/Notifications'
+
 function AuthStack() {
   const Stack = createNativeStackNavigator()
   const screens = {
@@ -39,6 +40,11 @@ function AuthStack() {
     MapViewScreen,
     AddLocation,
     ResetPassword,
+    GenerateRoute,
+    Alerts,
+    Language,
+    PrivacyPolicy,
+    HelpCenter,
   }
 
   return (

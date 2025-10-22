@@ -73,11 +73,10 @@ const Responsive = {
   },
 
   sizeMatter: {
-    scale: (value) => scale(value), // Width
-    verticalScale: (value) => verticalScale(value), // Height
-    moderateScale: (value) => moderateScale(value), // Text
+    scale: (value) => scale(value), 
+    verticalScale: (value) => verticalScale(value), 
+    moderateScale: (value) => moderateScale(value), 
   },
-
 }
 
 export default Responsive

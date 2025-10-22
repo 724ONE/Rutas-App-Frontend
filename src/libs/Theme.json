@@ -1,6 +1,9 @@
 {
   "colors": {
     "primary": "#F9AC00",
+        "primaryBg": "#EBAC132B",
+
+    
     "secondary": "#BA4D14",
     "tertiary": "#4E6F66",
     "lightSky": "#5688A9",

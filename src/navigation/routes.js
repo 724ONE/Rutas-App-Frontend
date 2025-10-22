@@ -9,7 +9,7 @@ const Routes = {
     resetPassword: 'ResetPassword',
     customBottomNav: 'CustomBottomNav',
     home: 'Home',
-    location: 'Location',
+    createRoute: 'CreateRoute',
     notifications: 'Notifications',
     profile: 'Profile',
     editProfile: 'EditProfile',
@@ -18,5 +18,11 @@ const Routes = {
     mapViewScreen: 'MapViewScreen',
     addLocation: 'AddLocation',
     history: 'History',
+    generateRoute: 'GenerateRoute',
+    alerts: "Alerts",
+    language: 'Language',
+    privacyPolicy: "PrivacyPolicy",
+    helpCenter: "HelpCenter",
+    
 }
 export default Routes;
